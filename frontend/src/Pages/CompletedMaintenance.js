@@ -30,7 +30,7 @@ function CompletedMaintenance() {
       try {
         const completedDates = [];
         for (const maintenance of completedMaintenance) {
-          const response = await axios.get(`http://localhost:8000/notifications`);
+          const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/notifications`);
           const filteredNotifications = response.data.existingNotifications.filter(
             notification => notification.maintenanceId === maintenance._id
           );
