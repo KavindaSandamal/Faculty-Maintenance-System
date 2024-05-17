@@ -12,7 +12,7 @@ function MaintenanceRequests() {
   useEffect(() => {
     const fetchMaintenanceRequests = async () => {
       try {
-        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequests/${submittedBy}`);
+        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequests/${submittedBy}`);
         setMaintenanceRequests(response.data.existingMaintenanceRequests);
       } catch (error) {
         setError(error.response?.data?.message || 'Error fetching maintenance requests');

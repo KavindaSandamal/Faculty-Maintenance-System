@@ -10,7 +10,7 @@ function CompletedMaintenance() {
   useEffect(() => {
     const fetchCompletedMaintenance = async () => {
       try {
-        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/maintenanceRequests');
+        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequests');
         const completedMaintenance = response.data.existingMaintenanceRequests.filter(
           task => task.status === 'Completed'
         );
@@ -30,7 +30,7 @@ function CompletedMaintenance() {
       try {
         const completedDates = [];
         for (const maintenance of completedMaintenance) {
-          const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/notifications`);
+          const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/api/notifications`);
           const filteredNotifications = response.data.existingNotifications.filter(
             notification => notification.maintenanceId === maintenance._id
           );

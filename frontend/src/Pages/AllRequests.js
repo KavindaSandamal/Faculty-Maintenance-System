@@ -12,7 +12,7 @@ function AllRequests() {
   useEffect(() => {
     const fetchAllRequests = async () => {
       try {
-        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/maintenanceRequests');
+        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequests');
         const pendingRequests = response.data.existingMaintenanceRequests.filter(request => request.status === 'Pending');
         setAllRequests(pendingRequests);
       } catch (error) {

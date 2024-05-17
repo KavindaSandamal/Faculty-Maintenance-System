@@ -14,7 +14,7 @@ function MaintenanceRequestDetail() {
   useEffect(() => {
     const fetchMaintenanceRequest = async () => {
       try {
-        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequest/${id}`);
+        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequest/${id}`);
         console.log('API Response:', response.data);
 
         if (response.data.success) {
@@ -35,7 +35,7 @@ function MaintenanceRequestDetail() {
 
   const handleApprove = async () => {
     try {
-      const approveResponse = await axios.post(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequest/${id}/approve`);
+      const approveResponse = await axios.post(`http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequest/${id}/approve`);
       
       if (approveResponse.data.success) {
         setMaintenanceRequest(prevState => ({
@@ -43,7 +43,7 @@ function MaintenanceRequestDetail() {
           status: 'In Progress'
         }));
 
-        const notificationResponse = await axios.post('http://faculty-maintenance-system-api.vercel.app/sendNotification', {
+        const notificationResponse = await axios.post('http://faculty-maintenance-system-api.vercel.app/api/sendNotification', {
           userId: maintenanceRequest.submittedBy,
           maintenanceId: maintenanceRequest._id,
           message: `Your maintenance request of ${maintenanceRequest.description} has been approved and is now in progress.`
@@ -67,12 +67,12 @@ function MaintenanceRequestDetail() {
 
   const handleReject = async () => {
     try {
-      const rejectResponse = await axios.post(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequest/${id}/reject`);
+      const rejectResponse = await axios.post(`http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequest/${id}/reject`);
       
       if (rejectResponse.data.success) {
         setMaintenanceRequest(null);
 
-        const notificationResponse = await axios.post('http://faculty-maintenance-system-api.vercel.app/sendNotification', {
+        const notificationResponse = await axios.post('http://faculty-maintenance-system-api.vercel.app/api/sendNotification', {
           userId: maintenanceRequest.submittedBy,
           message: `Your maintenance request of ${maintenanceRequest.description} has been rejected.`
         });
