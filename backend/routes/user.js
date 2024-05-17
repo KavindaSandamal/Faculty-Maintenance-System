@@ -14,7 +14,7 @@ router.post('/register/user', async (req, res) => {
 });
 
 // Get all users
-router.get('https://faculty-maintenance-system-api.vercel.app/users', async (req, res) => {
+router.get('/users', async (req, res) => {
   try {
     const users = await User.find().exec();
     res.status(200).json({ success: true, existingUsers: users });
@@ -62,19 +62,19 @@ router.delete('/user/delete/:id', async (req, res) => {
   }
 });
 
+// Save a user
 router.post('/user/save', async (req, res) => {
   try {
     const newUser = new User(req.body);
-
     const savedUser = await newUser.save();
-
     res.json({ message: 'User Created Successfully', newUser: savedUser });
   } catch (error) {
     res.status(400).json({ message: 'User creation unsuccessful', error: error.message });
   }
 });
 
-router.post('https://faculty-maintenance-system-api.vercel.app/login', async (req, res) => {
+// User login
+router.post('/login', async (req, res) => {
   const { regNo, password } = req.body;
 
   try {
@@ -90,7 +90,5 @@ router.post('https://faculty-maintenance-system-api.vercel.app/login', async (re
     res.status(500).json({ success: false, message: 'An error occurred while processing your request' });
   }
 });
-
-
 
 module.exports = router;
