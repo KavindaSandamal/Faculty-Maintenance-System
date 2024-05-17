@@ -3,41 +3,34 @@ const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path');
 
-
-//import routes
+// Import routes
 const userRoute = require('./routes/user');
 const maintenanceRequestRoute = require('./routes/maintenanceRequest');
 const notificationRoute = require('./routes/notification');
 
-//app midlware
+// Middleware
 app.use(bodyParser.json());
-app.use(cors(
-    {
-        origin: ["https://faculty-maintenance-system-frontend.vercel.app"],
-        methods: ["POST","GET","UPDATE","DELETE"]
-        
-    }
-));
+app.use(cors({
+    origin: ["https://faculty-maintenance-system-frontend.vercel.app"],
+    methods: ["POST", "GET", "PUT", "DELETE"]
+}));
 
+app.use('/api', userRoute);
+app.use('/api', maintenanceRequestRoute);
+app.use('/api', notificationRoute);
 
-app.use(userRoute);
-app.use(maintenanceRequestRoute);
-app.use(notificationRoute);
+// Default route for root path
+app.get('/', (req, res) => {
+    res.send('Welcome to the Faculty Maintenance System API');
+});
 
-const PORT = 8000;
 const DB_URL = 'mongodb+srv://facultymaintenance:fmms123@fmms.zwouah7.mongodb.net/?retryWrites=true&w=majority';
 
-mongoose.connect(DB_URL, {
-})
+mongoose.connect(DB_URL)
     .then(() => {
         console.log('DB connected');
     })
     .catch((err) => console.log('DB connection error', err));
 
-app.use(express.json());
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
