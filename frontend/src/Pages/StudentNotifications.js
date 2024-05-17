@@ -9,7 +9,7 @@ function StudentNotifications({ userId }) {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/api/notifications/${userId}`);
+        const response = await axios.get(`https://faculty-maintenance-system-api.vercel.app/api/notifications/${userId}`);
         // Assuming notifications are returned in response.data
         if (response.data && response.data.notifications) {
           setNotifications(response.data.notifications);
