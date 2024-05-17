@@ -33,28 +33,16 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('https://faculty-maintenance-system-api.vercel.app/api/login', {
         regNo,
         password,
       });
-  
+
       if (response.data.success) {
-        const { user } = response.data;
-        // Check if the user object contains the 'status' field
-        if ('status' in user) {
-          if (user.status === 'active') {
-            handleLogin(user);
-            toast.success('Login successful!');
-          } else {
-            toast.error('Your account is inactive. Please contact an administrator.');
-          }
-        } else {
-          // If the 'status' field is not provided, consider the account active
-          handleLogin(user);
-          toast.success('Login successful!');
-        }
+        handleLogin(response.data.user);
+        toast.success('Login successful!');
       } else {
         toast.error('Authentication failed');
       }
@@ -70,7 +58,7 @@ function Login() {
 
 
   return (
-    <body> 
+    <body> {/* This should be replaced with a valid JSX element */}
       <section className="vh-100">
         <div className="container-fluid h-custom">
           <div className="row d-flex justify-content-center align-items-center h-100">

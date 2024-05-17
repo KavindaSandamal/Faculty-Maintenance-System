@@ -1,41 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); 
-const PendingRequest = require('../models/pendingRequest');
+const User = require('../models/user'); // Assuming your user model is named "User"
 
 // Create a new user
 router.post('/register/user', async (req, res) => {
   try {
-    const {fullName,email,regNo,role,department,contactNumber,password,confirmPassword, status} = req.body;
-
-    // Create a new user with the provided data
-    const newUser = new User({fullName,email,regNo,role,department,contactNumber,password,confirmPassword,status});
-
-    // Save the user to the database
+    const newUser = new User(req.body);
     await newUser.save();
-
-    // Respond with success message
-    res.json({ success: true, message: 'User created successfully' });
+    res.status(201).json({ success: 'User Created Successfully' });
   } catch (error) {
-    // Handle errors
-    console.error(error);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
+    res.status(400).json({ error: error.message });
   }
 });
-
-router.put('/user/approve/:id', async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(req.params.id, { status: 'active' }, { new: true });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json({ message: 'User approved successfully', user });
-  } catch (error) {
-    console.error('Error approving user:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
 
 // Get all users
 router.get('/users', async (req, res) => {
