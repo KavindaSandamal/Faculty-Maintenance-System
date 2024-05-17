@@ -21,7 +21,7 @@ const UpdateFullNameModal = ({ currentUser, onClose }) => {
     event.preventDefault();
     try {
       // Send a PUT request to update the full name in the database
-      await axios.put(`http://localhost:8000/user/update/${currentUser._id}`, { fullName: newFullName });
+      await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/update/${currentUser._id}`, { fullName: newFullName });
       onClose(); // Close the modal after successful update
       toast.success('Full Name updated successfully');
     } catch (error) {

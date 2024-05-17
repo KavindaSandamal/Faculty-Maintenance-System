@@ -23,7 +23,7 @@ export default function Header() {
       try {
         const userId = getUserIdFromUrl(location.pathname);
         if (userId) {
-          const response = await axios.get(`http://localhost:8000/user/${userId}`);
+          const response = await axios.get(`https://faculty-maintenance-system-api.vercel.app/api/user/${userId}`);
           if (response.data.success) {
             setCurrentUser(response.data.user);
           } else {
