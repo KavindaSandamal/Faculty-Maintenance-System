@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User'); // Assuming you have a User model
+const User = require('../models/user'); // Assuming you have a User model
 const PendingRequest = require('../models/pendingRequest'); // Assuming you have a PendingRequest model
 
 router.post('/admin/approve-request', async (req, res) => {
