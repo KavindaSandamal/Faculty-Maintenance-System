@@ -74,7 +74,7 @@ router.post('/user/save', async (req, res) => {
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('https://faculty-maintenance-system-api.vercel.app/login', async (req, res) => {
   const { regNo, password } = req.body;
 
   try {
