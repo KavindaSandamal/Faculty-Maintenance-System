@@ -1,0 +1,29 @@
+.footer_container{
+  margin-top: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: #c8c2c2;
+  color: #000000;
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.footer_section{
+  flex: 1;
+  text-align: left;
+}
+
+.footer h4{
+  color: #000000;
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.footer p{
+  margin: 0;
+  font-size: 14px;
+  color: #000000;
+  text-align: left;
+}

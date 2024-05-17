@@ -1,0 +1,88 @@
+.main_maincontainer {
+  width: 1100px;
+  height: 650px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: rgba(100, 40, 137, 0.08);
+  margin-left: 120px;
+  margin-top: -40px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.auth_form_container_text{
+  font-family: Inter;
+  font-weight: bold;
+  margin-left: 420px;
+  margin-top: 40px;
+ 
+}
+
+.request_text {
+  width: 244px;
+  height: 44px;
+  flex-shrink: 0;
+  color: #4A3C3C;
+  text-align: justify;
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.97523; /* Adjusted line-height */
+  margin-bottom: 10px; /* Add some bottom margin for spacing */
+}
+
+.request_container {
+  width: 534px;
+  height: 48px;
+  flex-shrink: 0;
+  stroke-width: 1px;
+  stroke: #000; /* Not sure if stroke is supported in this context, consider using border instead */
+}
+
+.mini_container {
+  width: 1000px;
+  height: 1000px;
+  margin-left: 20px;
+  margin-top: 95px;
+}
+
+.button_request {
+  width: 209px;
+  height: 62px;
+  flex-shrink: 0;
+  border-radius: 10px; /* Making the button slightly rounded */
+  background: rgb(196, 193, 193);
+  margin-bottom: 30px;
+ /* Adding text color */
+  /* Adjusting font size */
+  font-weight: bold; /* Making the text bold */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase; /* Uppercasing the text */
+  cursor: pointer; /* Adding cursor pointer */
+
+
+padding: 20px;
+
+cursor: pointer;
+color: black;
+font-weight: bold;
+font-family: Inter;
+font-size: 17px;
+}
+.imageClass2{
+  width: 400px;
+height: 500px;
+flex-shrink: 0;
+background:  lightgray 50% , cover no-repeat;
+margin-top : -680px;
+margin-left: 750px;
+}
+
+
+.imageClass3{
+margin-left: 600px;
+width: 450px;
+height: 600px;
+margin-top: -610px;
+}
