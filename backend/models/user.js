@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   contactNumber: { type: String },
   role: { type: String, required: true }, // Student, Faculty Staff, Maintenance Staff, Admin, System Administrator
   department: { type: String },
+  status: {type: String, required: true},
   assignedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MaintenanceRequest' }],
   // Add more fields as needed
 }, { timestamps: true });

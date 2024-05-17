@@ -5,11 +5,53 @@ const User = require('../models/user'); // Assuming your user model is named "Us
 // Create a new user
 router.post('/register/user', async (req, res) => {
   try {
-    const newUser = new User(req.body);
+    const {
+      fullName,
+      email,
+      regNo,
+      role,
+      department,
+      contactNumber,
+      password,
+      confirmPassword, 
+      status
+    } = req.body;
+
+    // Create a new user with the provided data
+    const newUser = new User({
+      fullName,
+      email,
+      regNo,
+      role,
+      department,
+      contactNumber,
+      password,
+      confirmPassword,
+      status
+    });
+
+    // Save the user to the database
     await newUser.save();
-    res.status(201).json({ success: 'User Created Successfully' });
+
+    // Respond with success message
+    res.json({ success: true, message: 'User created successfully' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    // Handle errors
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+router.put('/user/approve/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, { status: 'active' }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'User approved successfully', user });
+  } catch (error) {
+    console.error('Error approving user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
