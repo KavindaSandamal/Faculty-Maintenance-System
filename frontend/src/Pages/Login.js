@@ -35,7 +35,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://faculty-maintenance-system-api.vercel.app/api/login', {
+      const response = await axios.post('https://faculty-maintenance-system-api.vercel.app/api/login', {
         regNo,
         password,
       });
