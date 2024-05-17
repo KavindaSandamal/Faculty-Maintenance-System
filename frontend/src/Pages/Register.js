@@ -16,13 +16,20 @@ function Register() {
     contactNumber: '',
     password: '',
     confirmPassword: '',
+    status: '' // Add status field to formData state
   });
 
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'role') {
+      // Automatically set status based on role
+      const status = value === 'Maintenance Division' ? 'inactive' : 'active';
+      setFormData({ ...formData, role: value, status });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   useEffect(() => {
@@ -44,6 +51,9 @@ function Register() {
   
     const { fullName, email, regNo, role, department, contactNumber, password, confirmPassword } = formData;
   
+    // Automatically set status based on role if not already set
+    const status = formData.status || (role === 'Maintenance Division' ? 'inactive' : 'active');
+  
     const data = {
       fullName,
       email,
@@ -53,20 +63,14 @@ function Register() {
       contactNumber,
       password,
       confirmPassword,
+      status // Include status in data object
     };
   
     axios.post('https://faculty-maintenance-system-api.vercel.app/api/register/user', data)
       .then((res) => {
         console.log(res.data);
         if (res.data.success) {
-          if (role === 'Maintenance Division') {
-            alert('Registration request submitted. Awaiting admin approval.');
-            toast.info('Registration request submitted. Awaiting admin approval.');
-          } else {
-            alert('User Created Successfully');
-            toast.success('User Created Successfully');
-          }
-
+          alert('User Created Successfully');
           setFormData({
             fullName: '',
             email: '',
@@ -76,14 +80,15 @@ function Register() {
             contactNumber: '',
             password: '',
             confirmPassword: '',
+            status: '' // Reset status after submission
           });
-
+  
           navigate('/');
+          toast.success('Request Created Successfully');
         }
       })
       .catch((error) => {
-        console.error('Error:', error.response?.data?.error || error.message);
-        toast.error('Error: ' + (error.response?.data?.error || error.message));
+        console.error('Error:', error.response.data.error);
       });
   };
 

@@ -6,32 +6,33 @@ const PendingRequest = require('../models/pendingRequest');
 // Create a new user
 router.post('/register/user', async (req, res) => {
   try {
-    const { fullName, email, regNo, role, department, contactNumber, password, confirmPassword } = req.body;
+    const {fullName,email,regNo,role,department,contactNumber,password,confirmPassword, status} = req.body;
 
-    if (password !== confirmPassword) {
-      return res.status(400).json({ success: false, error: 'Passwords do not match' });
-    }
+    // Create a new user with the provided data
+    const newUser = new User({fullName,email,regNo,role,department,contactNumber,password,confirmPassword,status});
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ success: false, error: 'User already exists' });
-    }
+    // Save the user to the database
+    await newUser.save();
 
-    if (role === 'Maintenance Division') {
-      // Save the request as pending
-      const pendingRequest = new PendingRequest({ fullName, email, regNo, role, department, contactNumber, password });
-      await pendingRequest.save();
-      return res.status(200).json({ success: true, message: 'Registration request submitted. Awaiting admin approval.' });
-    } else {
-      // Save the user directly
-      const user = new User({ fullName, email, regNo, role, department, contactNumber, password });
-      await user.save();
-      return res.status(200).json({ success: true, message: 'User Created Successfully' });
-    }
+    // Respond with success message
+    res.json({ success: true, message: 'User created successfully' });
   } catch (error) {
+    // Handle errors
     console.error(error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+router.put('/user/approve/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, { status: 'active' }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({ message: 'User approved successfully', user });
+  } catch (error) {
+    console.error('Error approving user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 

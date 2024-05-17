@@ -45,7 +45,7 @@ function AddRequest() {
     data.append('submittedBy', submittedBy);
   
     try {
-      const response = await axios.post('http://faculty-maintenance-system-api.vercel.app/api/maintenanceRequest', data, {
+      const response = await axios.post('https://faculty-maintenance-system-api.vercel.app/api/maintenanceRequest', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

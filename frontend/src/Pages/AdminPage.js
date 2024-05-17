@@ -1,51 +1,65 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function AdminPage() {
-  const [pendingRequests, setPendingRequests] = useState([]);
+  const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    axios.get('https://faculty-maintenance-system-api.vercel.app/api/admin/pending-requests')
-      .then(res => {
-        setPendingRequests(res.data.pendingRequests);
-      })
-      .catch(error => {
-        console.error('Error:', error.response?.data?.error || error.message);
-        toast.error('Error: ' + (error.response?.data?.error || error.message));
-      });
+    // Fetch requests with inactive status from the backend upon component mounting
+    fetchRequests();
   }, []);
 
-  const handleApproval = (id, status) => {
-    axios.post(`https://faculty-maintenance-system-api.vercel.app/api/admin/approve-request`, { id, status })
-      .then(res => {
-        if (res.data.success) {
-          toast.success('Request processed successfully');
-          setPendingRequests(pendingRequests.filter(request => request.id !== id));
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error.response?.data?.error || error.message);
-        toast.error('Error: ' + (error.response?.data?.error || error.message));
-      });
+  const fetchRequests = async () => {
+    try {
+      const response = await axios.get('https://faculty-maintenance-system-api.vercel.app/api/users');
+      const allUsers = response.data.existingUsers;
+      const inactiveRequests = allUsers.filter(user => user.status === 'inactive');
+      setRequests(inactiveRequests);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+    }
+  };
+
+  const handleApprove = async (userId) => {
+    try {
+      await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/approve/${userId}`);
+      // Refresh the requests list after approving
+      fetchRequests();
+    } catch (error) {
+      console.error('Error approving request:', error);
+    }
+  };
+
+  const handleReject = async (userId) => {
+    try {
+      await axios.delete(`https://faculty-maintenance-system-api.vercel.app/api/user/delete/${userId}`);
+      // Refresh the requests list after rejecting
+      fetchRequests();
+    } catch (error) {
+      console.error('Error rejecting request:', error);
+    }
   };
 
   return (
-    <div className="container">
-      <h2>Pending Registration Requests</h2>
-      <ul>
-        {pendingRequests.map(request => (
-          <li key={request.id}>
-            <p>Name: {request.fullName}</p>
-            <p>Email: {request.email}</p>
-            <p>Role: {request.role}</p>
-            <p>Department: {request.department}</p>
-            <button onClick={() => handleApproval(request.id, 'approved')}>Approve</button>
-            <button onClick={() => handleApproval(request.id, 'rejected')}>Reject</button>
-          </li>
+    <div className='main-container'>
+      <h1>Admin Page</h1>
+      <div className='requests-list'>
+        {requests.map(request => (
+          <div key={request._id} className='request-item'>
+            <p>{request.fullName}</p>
+            <p>{request.email}</p>
+            <p>{request.regNo}</p>
+            <p>{request.contactNumber}</p>
+            <p>Status: {request.status}</p>
+            {request.status === 'inactive' && (
+              <div>
+                <button onClick={() => handleApprove(request._id)}>Approve</button>
+                <button onClick={() => handleReject(request._id)}>Reject</button>
+              </div>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
