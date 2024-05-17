@@ -13,7 +13,13 @@ const notificationRoute = require('./routes/notification');
 
 //app midlware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin: ["https://faculty-maintenance-system-api.vercel.app"],
+        methods: ["POST","GET","UPDATE","DELETE"],
+        credentials: true
+    }
+));
 
 
 app.use(userRoute);
