@@ -14,7 +14,7 @@ router.post('/register/user', async (req, res) => {
 });
 
 // Get all users
-router.get('/users', async (req, res) => {
+router.get('https://faculty-maintenance-system-api.vercel.app/users', async (req, res) => {
   try {
     const users = await User.find().exec();
     res.status(200).json({ success: true, existingUsers: users });
