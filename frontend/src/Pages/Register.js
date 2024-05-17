@@ -88,9 +88,14 @@ function Register() {
         }
       })
       .catch((error) => {
-        console.error('Error:', error.response.data.error);
+        if (error.response) {
+          console.error('Error:', error.response.data.error);
+        } else {
+          console.error('Error:', error.message); // Log the error message
+        }
       });
   };
+  
 
   return (
     <body>
