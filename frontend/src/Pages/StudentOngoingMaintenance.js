@@ -9,7 +9,7 @@ function StudentOngoingMaintenance({ userId }) {
   useEffect(() => {
     const fetchOngoingMaintenance = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/maintenanceRequest/ongoingMaintenance/${userId}`);
+        const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequest/ongoingMaintenance/${userId}`);
         setOngoingMaintenance(response.data.ongoingMaintenance);
       } catch (error) {
         setError(error.response?.data?.message || 'Error fetching ongoing maintenance');
