@@ -72,7 +72,7 @@ function AcademicStaffPage() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="nav navbar-nav ml-auto">
                 <li className="nav-item active">
-                  <a className="nav-link" href="#">Welcome to Student Dashboard</a>
+                  <a className="nav-link" href="#">Welcome to Academic Staff Dashboard</a>
                 </li>
               </ul>
             </div>
