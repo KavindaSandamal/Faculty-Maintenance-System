@@ -14,7 +14,7 @@ function OngoingMaintenance() {
   useEffect(() => {
     const fetchOngoingMaintenance = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/maintenanceRequests');
+        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/maintenanceRequests');
         const inProgressMaintenance = response.data.existingMaintenanceRequests.filter(
           task => task.status === 'In Progress'
         );
@@ -35,7 +35,7 @@ function OngoingMaintenance() {
       try {
         const updatedDates = [];
         for (const maintenance of ongoingMaintenance) {
-          const response = await axios.get(`http://localhost:8000/notifications`);
+          const response = await axios.get(`http://faculty-maintenance-system-api.vercel.app/notifications`);
           const filteredNotifications = response.data.existingNotifications.filter(
             notification => notification.maintenanceId === maintenance._id
           );
@@ -78,12 +78,12 @@ function OngoingMaintenance() {
     if (newProgress === 'Completed') {
       updatedMaintenance[index].status = 'Completed';
       try {
-        await axios.post(`http://localhost:8000/maintenanceRequest/${id}/completed`, {
+        await axios.post(`http://faculty-maintenance-system-api.vercel.app/maintenanceRequest/${id}/completed`, {
           status: 'Completed'
         });
 
         // Send a notification when the task is completed
-        await axios.post('http://localhost:8000/sendNotification', {
+        await axios.post('http://faculty-maintenance-system-api.vercel.app/sendNotification', {
           userId: updatedMaintenance[index].submittedBy,
           maintenanceId: updatedMaintenance[index]._id,
           message: `Your maintenance request for "${updatedMaintenance[index].description}" has been completed.`
