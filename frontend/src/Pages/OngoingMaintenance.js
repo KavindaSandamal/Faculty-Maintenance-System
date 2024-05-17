@@ -66,7 +66,7 @@ function OngoingMaintenance() {
   const calculatePendingDays = (createdAt) => {
     const today = new Date();
     const createdDate = new Date(createdAt);
-    const differenceInTime = createdDate.getTime() - today.getTime();
+    const differenceInTime = today.getTime() - createdDate.getTime();
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
