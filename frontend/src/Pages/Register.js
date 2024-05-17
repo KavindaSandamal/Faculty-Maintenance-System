@@ -61,7 +61,7 @@ function Register() {
       confirmPassword,
     };
   
-    axios.post('http://faculty-maintenance-system-api.vercel.app/api/register/user', data)
+    axios.post('https://faculty-maintenance-system-api.vercel.app/api/register/user', data)
       .then((res) => {
         console.log(res.data);
         if (res.data.success) {
