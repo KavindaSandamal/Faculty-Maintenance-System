@@ -15,7 +15,7 @@ const notificationRoute = require('./routes/notification');
 app.use(bodyParser.json());
 app.use(cors(
     {
-        origin: ["https://faculty-maintenance-system-api.vercel.app"],
+        origin: ["https://faculty-maintenance-system-frontend.vercel.app/"],
         methods: ["POST","GET","UPDATE","DELETE"],
         credentials: true
     }
