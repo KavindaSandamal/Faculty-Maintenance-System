@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 app.use(cors(
     {
         origin: ["https://faculty-maintenance-system-frontend.vercel.app"],
-        methods: ["POST","GET","UPDATE","DELETE"],
-        credentials: true
+        methods: ["POST","GET","UPDATE","DELETE"]
+        
     }
 ));
 
