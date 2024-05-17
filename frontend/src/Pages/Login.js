@@ -20,7 +20,7 @@ function Login() {
         navigate(`/adminPage/${id}`);
         break;
       case 'Academic Staff':
-        navigate(`/academicStaffPage/${id}`);
+        navigate(`/studentPage/${id}`);
         break;
       case 'Maintenance Division':
         navigate(`/maintenanceDivisionPage/${id}`);
