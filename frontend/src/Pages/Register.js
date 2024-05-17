@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
 
-
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -23,12 +22,7 @@ function Register() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    if (name === 'role') {
-      setFormData({ ...formData, role: value });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
   useEffect(() => {
@@ -65,7 +59,14 @@ function Register() {
       .then((res) => {
         console.log(res.data);
         if (res.data.success) {
-          alert('User Created Successfully');
+          if (role === 'Maintenance Division') {
+            alert('Registration request submitted. Awaiting admin approval.');
+            toast.info('Registration request submitted. Awaiting admin approval.');
+          } else {
+            alert('User Created Successfully');
+            toast.success('User Created Successfully');
+          }
+
           setFormData({
             fullName: '',
             email: '',
@@ -76,16 +77,15 @@ function Register() {
             password: '',
             confirmPassword: '',
           });
-  
+
           navigate('/');
-          toast.success('Request Created Successfully');
         }
       })
       .catch((error) => {
-        console.error('Error:', error.response.data.error);
+        console.error('Error:', error.response?.data?.error || error.message);
+        toast.error('Error: ' + (error.response?.data?.error || error.message));
       });
   };
-  
 
   return (
     <body>

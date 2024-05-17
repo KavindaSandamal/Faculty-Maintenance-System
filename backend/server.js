@@ -8,6 +8,7 @@ const cors = require('cors');
 const userRoute = require('./routes/user');
 const maintenanceRequestRoute = require('./routes/maintenanceRequest');
 const notificationRoute = require('./routes/notification');
+const adminRoute = require('./routes/admin');
 
 // Middleware
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.use(cors({
 app.use('/api', userRoute);
 app.use('/api', maintenanceRequestRoute);
 app.use('/api', notificationRoute);
+app.use('/api', adminRoute);
 
 // Default route for root path
 app.get('/', (req, res) => {

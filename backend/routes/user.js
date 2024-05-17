@@ -1,17 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user'); // Assuming your user model is named "User"
+const User = require('../models/User'); 
+const PendingRequest = require('../models/pendingRequest');
 
 // Create a new user
 router.post('/register/user', async (req, res) => {
   try {
-    const newUser = new User(req.body);
-    await newUser.save();
-    res.status(201).json({ success: 'User Created Successfully' });
+    const { fullName, email, regNo, role, department, contactNumber, password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({ success: false, error: 'Passwords do not match' });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: 'User already exists' });
+    }
+
+    if (role === 'Maintenance Division') {
+      // Save the request as pending
+      const pendingRequest = new PendingRequest({ fullName, email, regNo, role, department, contactNumber, password });
+      await pendingRequest.save();
+      return res.status(200).json({ success: true, message: 'Registration request submitted. Awaiting admin approval.' });
+    } else {
+      // Save the user directly
+      const user = new User({ fullName, email, regNo, role, department, contactNumber, password });
+      await user.save();
+      return res.status(200).json({ success: true, message: 'User Created Successfully' });
+    }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
 
 // Get all users
 router.get('/users', async (req, res) => {
