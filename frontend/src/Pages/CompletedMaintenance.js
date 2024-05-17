@@ -10,7 +10,7 @@ function CompletedMaintenance() {
   useEffect(() => {
     const fetchCompletedMaintenance = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/maintenanceRequests');
+        const response = await axios.get('http://faculty-maintenance-system-api.vercel.app/maintenanceRequests');
         const completedMaintenance = response.data.existingMaintenanceRequests.filter(
           task => task.status === 'Completed'
         );
