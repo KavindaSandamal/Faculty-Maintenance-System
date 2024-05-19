@@ -64,7 +64,7 @@ function AddRequest() {
       }
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create request');
+      toast.error('Failed to create request. Please try again later.');
     }
   };
 
@@ -79,6 +79,7 @@ function AddRequest() {
             onChange={handleInputChange}
             name="otherDepartment"
             placeholder="Enter department or place"
+            required
           />
         </div>
       );
@@ -97,12 +98,14 @@ function AddRequest() {
             onChange={handleInputChange}
             name="otherIssueType"
             placeholder="Enter issue type"
+            required
           />
         </div>
       );
     }
     return null;
   };
+
 
   return (
     <body>
