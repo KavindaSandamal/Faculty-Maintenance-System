@@ -42,7 +42,7 @@ function AddRequest() {
     data.append('submittedBy', formData.submittedBy);
 
     try {
-      const response = await axios.post('https://your-backend-api-url/api/maintenanceRequest', data, {
+      const response = await axios.post('http://your-backend-api-url/api/maintenanceRequest', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
