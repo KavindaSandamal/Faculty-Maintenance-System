@@ -13,7 +13,7 @@ function AdminPage() {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/users');
+      const response = await axios.get('https://faculty-maintenance-system-api.vercel.app/api/users');
       const allUsers = response.data.existingUsers;
       const inactiveRequests = allUsers.filter(user => user.status === 'inactive');
       setRequests(inactiveRequests);
@@ -25,7 +25,7 @@ function AdminPage() {
 
   const handleApprove = async (userId) => {
     try {
-      await axios.put(`http://localhost:8000/user/approve/${userId}`);
+      await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/approve/${userId}`);
       fetchRequests();
     } catch (error) {
       console.error('Error approving request:', error);
@@ -35,7 +35,7 @@ function AdminPage() {
 
   const handleReject = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8000/user/delete/${userId}`);
+      await axios.delete(`https://faculty-maintenance-system-api.vercel.app/api/user/delete/${userId}`);
       fetchRequests();
     } catch (error) {
       console.error('Error rejecting request:', error);
