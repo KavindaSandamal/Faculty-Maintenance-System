@@ -2,17 +2,16 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const mongoose = require('mongoose'); // Import mongoose
-const app = express();
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
+
 // Configure Google Cloud Storage
 const storage = new Storage({
   keyFilename: "../fmms-423817-1bd3dab569d7.json",
-  projectId: "project=fmms-423817",
+  projectId: "fmms-423817", // Corrected project ID
 });
 
-const bucket = storage.bucket("fmms_image");
+const coolFilesBucket = storage.bucket("fmms_image"); // Corrected bucket instance
 
 // Configure Multer to use memory storage
 const upload = multer({
@@ -20,22 +19,35 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
 });
 
-router.post('/maintenanceRequest', (req, res) => {
-  upload(req, res, async (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Error uploading file' });
-    }
+router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
 
-    try {
-      const { department, place, issueType, priority, description } = req.body;
+  try {
+    const { department, place, issueType, priority, description } = req.body;
 
+    // Save the file to Google Cloud Storage
+    const blob = coolFilesBucket.file(Date.now() + path.extname(req.file.originalname));
+    const blobStream = blob.createWriteStream({
+      resumable: false,
+    });
+
+    blobStream.on('error', (err) => {
+      console.error('Blob stream error:', err);
+      res.status(500).json({ error: 'Error uploading file' });
+    });
+
+    blobStream.on('finish', async () => {
+      const publicUrl = `https://storage.googleapis.com/${coolFilesBucket.name}/${blob.name}`;
+
+      // Create a new maintenance request with the file URL
       const newMaintenanceRequest = new MaintenanceRequest({
         department,
         place,
         issueType,
         priority,
-        image: req.file.path, // Save the file path in the database
+        image: publicUrl, // Store the URL in the database
         description,
         submittedBy: req.body.submittedBy, // Add submittedBy field
       });
@@ -43,12 +55,13 @@ router.post('/maintenanceRequest', (req, res) => {
       const savedMaintenanceRequest = await newMaintenanceRequest.save();
 
       res.json({ success: 'Maintenance Request Created Successfully', newMaintenanceRequest: savedMaintenanceRequest });
-    } catch (error) {
-      res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
-    }
-  });
-});
+    });
 
+    blobStream.end(req.file.buffer); // Use file buffer instead of file path
+  } catch (error) {
+    res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
+  }
+});
 
 
 
