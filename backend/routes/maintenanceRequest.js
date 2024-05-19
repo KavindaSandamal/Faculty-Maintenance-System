@@ -5,6 +5,25 @@ const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
 
+export const getGCPCredentials = () => {
+  // Check if running in a local development environment
+  const isLocalDevelopment = process.env.NODE_ENV !== 'production';
+
+  // Hardcoded credentials for local development
+  if (isLocalDevelopment) {
+    return {
+      credentials: {
+        client_email: "fmms-service@fmms-423817.iam.gserviceaccount.com",
+        private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5jBjdYeV86oRi\nQwtKe6dfYkEnziYetrNEUdBgd1Dq4VFmzZHu92Y89GLh4y71Gq27QQlpJRP3+9FL\nNDuuqVAZUQoZyrI3CE7LTy/TNI03+FLz7qG1IVFRlsdSCL3rBWEmm6t6mcE9uDzl\nXI0I6VkWKDASV/o1BYZxmtOFXwz3l+BFSutu6ojpv+Q3IkY4KG+p7pz2dIxQ4Kx8\nmXbGj94CIsCukWX5v7npfeod4QWo4P5FhzOxJ2T2MLOMaM7GgdLacD7BYQ0zYIot\no1VQfARSm/iDLmFYK6QJXtjBPBsa3n9VYx5I58UHB+avfto5ISkMYT2kq5Oap5WK\nHYF5lJnzAgMBAAECggEAWSnzSvN/6fLyshugwebBLCuVvvCoTesjI4ojVjAQQQcM\n7JeN8OWPimwwVnereZqb8RfUU2Q/f9RRo8+SfKEdfkT80x8eXCbQYpAHnfmrgUGC\nb3l12QqNPuVznD7aMSXxJTH6ihx4CdZO4TOEDMvCBU1DqJUBhlhE3rP1wKpIG3Rc\naMiDHvqs+Gn8Uw/qDUf/tmYyoo5aqVwk2YtXYXvNg+uirebnRjT3eW9BQDAe6sDG\nvojb51Flp0t1gmb41YtPvC8yX8CUPtXClpkFpMH3lcNwcxfpRqA7YGyq7cB+TtCe\n8aqi25CXq4mQSjJDO8+ZJRmF20XsWnIgVAaZ+GyGLQKBgQDyZzzngUoaQk2tl7pI\nkOfMrZHMoN6XhqyMJleEQO5/agg5dsEnNh5qoeCNH+PBvCqQzBuJvQXmlPOBFPZX\nUwwqKMX2LgZnOgbmBvDGxe4IgfwYPEahXi+fkXgk0N0MpkV7gH5aA4Hk3dvAOVsc\nDfvcH3cu1Pw8B++EPxquZupO3QKBgQDD9HEUgsG7UZ66YThSzKoLjcClS4jmWgNv\nFfyeXQKLKWshlcarDaXS3P5FipqgknVgx2PMxn+GuOwItwBQWyhkza9qkOZNhc8v\ntIaFmftfUOYOpYtaO9rge0QeYFUCSt+2PsoC0MCHU2DuWONhc9JFSGvcWaaCXyBm\nmA0N8MK3DwKBgAhK49h/octYLVQc9rB41JU58tzvO+4vG0QII8JQflg5hmKA34a5\n4TyAoS/ywVXlXAdsFB0YLFWBDvuBfhPqsWXX0z3iwTFS2N2RqzcBmm0MFVW26iun\nDzYEQfnwcz91iLb65Fer+wubU2M2ExnYmJ8lLGybuK1NEDKT/hOtTaK5AoGBAJr3\nEQZbccIlhhV3FQfF+yQv8g3GcnlY7iZHiQPkIkLTenmQ7RARNvZO9ncgabBaoqDq\nji4/PFLaoy8xKfpiXMt7LiJkfP0JuRPM/CVj5Ls4SveCS3YMp8enM/Oh0xiBBfIm\nLbOUSu26LonPmeJTqhJId6RG8btgZ0s7K/e+Uv5ZAoGAUg6l/FN/lGFzdznLWddP\nGVDIuy8xrVn1AxMcgvo3+3XdW6YvZiJUh5ce4kvcPF76/2XdMUjQm/zp41KOIyiO\nGND+M+fwfDZXebmRt9/rQFC2pX+HTa5rzsPCBfCXruWfeV7GqXjabyvFdq6/QKqI\nN51X2c+s3g/2AQ5CHWEfiLU=\n-----END PRIVATE KEY-----\n",
+      },
+      projectId: "fmms-423817", // Your project ID
+    };
+  } else {
+    // Return an empty object for production (Vercel environment)
+    return {};
+  }
+};
+
 // Helper function to get Google Cloud Platform credentials from Vercel
 const getGCPCredentials = require('./getGCPCredentials');
 
