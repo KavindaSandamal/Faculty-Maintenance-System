@@ -5,13 +5,14 @@ const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
 
-// Configure Google Cloud Storage
-const storage = new Storage({
-  keyFilename: "./fmms-423817.json",
-  projectId: "fmms-423817", // Corrected project ID
-});
+// Helper function to get Google Cloud Platform credentials from Vercel
+const getGCPCredentials = require('./getGCPCredentials');
 
-const coolFilesBucket = storage.bucket("fmms_image"); // Corrected bucket instance
+// Create a storage client using the provided credentials
+const storageClient = new Storage(getGCPCredentials());
+
+// Configure Google Cloud Storage
+const coolFilesBucket = storageClient.bucket("fmms_image"); // Corrected bucket instance
 
 // Configure Multer to use memory storage
 const upload = multer({
@@ -62,10 +63,6 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
     res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
   }
 });
-
-
-
-
 
 // Get all maintenance requests
 router.get('/maintenanceRequests', async (req, res) => {
