@@ -6,9 +6,9 @@ const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose'); // Import mongoose
 const app = express();
-const cors = require('cors');
 
-app.use(cors());
+
+
 const MaintenanceRequest = require('../models/maintenanceRequest');
 
 // Configure Google Cloud Storage
