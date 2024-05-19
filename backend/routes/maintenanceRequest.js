@@ -1,71 +1,60 @@
 const express = require('express');
-const { Storage } = require('@google-cloud/storage');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose'); // Import mongoose
 const app = express();
 
-
-
 const MaintenanceRequest = require('../models/maintenanceRequest');
 
-// Configure Google Cloud Storage
-const storage = new Storage({
-  keyFilename: '../fmms-423817-1bd3dab569d7.json',
-  projectId: 'project=fmms-423817',
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  },
 });
 
-const bucket = storage.bucket('fmms_image');
-
-// Configure Multer to use memory storage
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
-});
+  storage: storage,
+  limits: { fileSize: 1000000 },
+}).single('image');
 
-router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-
-  const blob = bucket.file(Date.now() + path.extname(req.file.originalname));
-  const blobStream = blob.createWriteStream({
-    resumable: false,
-  });
-
-  blobStream.on('error', (err) => {
-    console.error('Blob stream error:', err);
-    res.status(500).json({ error: 'Error uploading file' });
-  });
-
-  blobStream.on('finish', async () => {
-    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+router.post('/maintenanceRequest', (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Error uploading file' });
+    }
 
     try {
-      const { department, place, issueType, priority, description, submittedBy } = req.body;
+      const { department, place, issueType, priority, description } = req.body;
 
       const newMaintenanceRequest = new MaintenanceRequest({
         department,
         place,
         issueType,
         priority,
-        image: publicUrl, // Store the URL in the database
+        image: req.file.path, // Save the file path in the database
         description,
-        submittedBy,
+        submittedBy: req.body.submittedBy, // Add submittedBy field
       });
 
       const savedMaintenanceRequest = await newMaintenanceRequest.save();
 
       res.json({ success: 'Maintenance Request Created Successfully', newMaintenanceRequest: savedMaintenanceRequest });
     } catch (error) {
-      console.error('Error saving request:', error);
       res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
     }
   });
-
-  blobStream.end(req.file.buffer);
 });
+
+
+
+
 
 
 // Get all maintenance requests
