@@ -1,5 +1,4 @@
 const express = require('express');
-require('dotenv').config();
 const { Storage } = require('@google-cloud/storage');
 const router = express.Router();
 const multer = require('multer');
@@ -13,11 +12,11 @@ const MaintenanceRequest = require('../models/maintenanceRequest');
 
 // Configure Google Cloud Storage
 const storage = new Storage({
-  keyFilename: process.env.GOOGLE_CLOUD_KEYFILE,
-  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+  keyFilename: '../fmms-423817-1bd3dab569d7.json',
+  projectId: 'project=fmms-423817',
 });
 
-const bucket = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET);
+const bucket = storage.bucket('fmms_image');
 
 // Configure Multer to use memory storage
 const upload = multer({
