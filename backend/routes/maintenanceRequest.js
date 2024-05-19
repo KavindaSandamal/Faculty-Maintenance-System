@@ -4,24 +4,21 @@ const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose'); // Import mongoose
 const app = express();
-
+const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  },
+// Configure Google Cloud Storage
+const storage = new Storage({
+  keyFilename: "../fmms-423817-1bd3dab569d7.json",
+  projectId: "project=fmms-423817",
 });
 
+const bucket = storage.bucket("fmms_image");
+
+// Configure Multer to use memory storage
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 },
-}).single('image');
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
+});
 
 router.post('/maintenanceRequest', (req, res) => {
   upload(req, res, async (err) => {
