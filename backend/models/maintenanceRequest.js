@@ -20,7 +20,7 @@ const maintenanceRequestSchema = new mongoose.Schema({
   image: {
     type: Buffer, // Change the type to Buffer to store binary data
     contentType: String, // Store the content type of the image
-    required: false
+    required: false,
   },
   description: {
     type: String,
