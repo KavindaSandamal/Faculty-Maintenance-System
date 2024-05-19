@@ -1,120 +1,154 @@
 .header {
-    display: flex;
-    position: relative;
-    width: 100%;
-    margin: 0;
-    padding: 10px 25px;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--Base-White, #FFF);
-    box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.10);
-  }
-  
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 10px 25px;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--Base-White, #FFF);
+  box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.10);
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.FMMS {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  color: #000;
+  text-align: justify;
+  font-family: Inter;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-right: 20px;
+  text-transform: uppercase;
+}
+
+.Home,
+.About_Us,
+.Dashboard {
+  color: var(--Gray-gray-700, #4A5568);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 25px;
+  margin: 0 10px;
+}
+
+.button_login {
+  display: flex;
+  padding: 14px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  background: linear-gradient(225deg, #6675F7 0%, #57007B 100%);
+}
+
+.login_text_2 {
+  color: #FFF;
+}
+
+.cd__main {
+  display: block !important;
+  background: linear-gradient(to right, #00b09b, #96c93d) !important;
+  min-height: 720px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px); /* Position the dropdown below the profile icon */
+  right: 0; /* Align the dropdown to the right */
+  background-color: white; /* Set the background color */
+  border: 1px solid #ccc; /* Add a border for better visibility */
+  border-radius: 4px; /* Add some border radius for rounded corners */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+  z-index: 1000; /* Ensure the dropdown is above other content */
+  display: none; /* Initially hide the dropdown */
+}
+
+.currentUser .dropdown {
+  display: block; /* Show the dropdown when the icon is clicked */
+}
+
+.currentUser {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+
+.profileIcon {
+  cursor: pointer;
+  margin-right: 10px; /* Add spacing between icon and name */
+}
+
+.userName {
+  font-weight: bold;
+  font-family: 500;
+  font-style: normal;
+  color: var(--Gray-gray-700, #4A5568);
+  font-size: 16px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
   .container {
-    display: flex;
-    width: 900px;
-    height: 30px;
-    padding: 10px 0px;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
-    margin-left: 200px; /* Adjusted margin */
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 10px;
   }
   
   .FMMS {
-    display: flex;
-    width: 65px;
-    height: 52px;
-    flex-direction: column;
-    justify-content: flex-end;
-    flex-shrink: 0;
-    color: #000;
-    text-align: justify;
-    font-family: Inter;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-right: 20px;
-    text-transform: uppercase;
+      font-size: 20px;
+      margin-right: 0;
+      margin-bottom: 10px;
   }
-  
+
   .Home,
   .About_Us,
   .Dashboard {
-    color: var(--Gray-gray-700, #4A5568);
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 25px;
-  }
-  
-  .About_Us {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .button_login {
-    width: 110px;
-    height: 45px;
-    display: flex;
-    padding: 14px 25px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 5px;
-    background: linear-gradient(225deg, #6675F7 0%, #57007B 100%);
-  }
-  
-  .login_text_2 {
-    color: #FFF;
-  }
-  
-
-
-  .cd__main {
-    display: block !important;
-    background: linear-gradient(to right, #00b09b, #96c93d) !important;
-    min-height: 720px;
-  }
-  
-  .dropdown {
-    position: absolute;
-    top: calc(100% + 10px); /* Position the dropdown below the profile icon */
-    right: -20; /* Align the dropdown to the right */
-    background-color: white; /* Set the background color */
-    border: 1px solid #ccc; /* Add a border for better visibility */
-    border-radius: 4px; /* Add some border radius for rounded corners */
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
-    z-index: 1000; /* Ensure the dropdown is above other content */
-    display: none; /* Initially hide the dropdown */
-  }
-  
-  .currentUser .dropdown {
-    display: block; /* Show the dropdown when the icon is clicked */
+      margin: 5px 0;
+      font-size: 14px;
   }
 
   .currentUser {
-    display: flex;
-    align-items: center; /* Align items vertically */
-  }
-  
-  .profileIcon {
-    cursor: pointer;
-    margin-right: 10px; /* Add spacing between icon and name */
-  }
-  
-  .userName {
-    font-weight: bold;
-    font-family: 500;
-    font-style: normal;
-    color: var(--Gray-gray-700, #4A5568);
-    font-size: 16px;
+      margin-top: 10px;
   }
 
+  .dropdown {
+      right: 0; /* Adjust if needed */
+  }
+}
 
+@media (max-width: 480px) {
+  .container {
+      padding: 0 5px;
+  }
   
-  
-  
+  .FMMS {
+      font-size: 18px;
+  }
+
+  .Home,
+  .About_Us,
+  .Dashboard {
+      font-size: 12px;
+  }
+
+  .currentUser {
+      font-size: 14px;
+  }
+}
