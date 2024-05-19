@@ -9,7 +9,7 @@ const router = express.Router();
 
 // Replace these values with your actual Google Cloud Storage credentials
 const GOOGLE_CLOUD_PROJECT_ID = 'fmms-423817';
-const GOOGLE_CLOUD_KEYFILE = './fmms-423817-1bd3dab569d7.json';
+const GOOGLE_CLOUD_KEYFILE = '../fmms-423817-1bd3dab569d7.json';
 const GOOGLE_CLOUD_BUCKET = 'fmms_image';
 
 // Configure Google Cloud Storage
