@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function AdminPage() {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('https://faculty-maintenance-system-api.vercel.app/api/users');
+      const response = await axios.get('http://localhost:8000/users');
       const allUsers = response.data.existingUsers;
       const inactiveRequests = allUsers.filter(user => user.status === 'inactive');
       setRequests(inactiveRequests);
@@ -25,7 +26,8 @@ function AdminPage() {
 
   const handleApprove = async (userId) => {
     try {
-      await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/approve/${userId}`);
+      await axios.put(`http://localhost:8000/user/approve/${userId}`);
+      toast.success('Approve successful!');
       fetchRequests();
     } catch (error) {
       console.error('Error approving request:', error);
@@ -35,7 +37,8 @@ function AdminPage() {
 
   const handleReject = async (userId) => {
     try {
-      await axios.delete(`https://faculty-maintenance-system-api.vercel.app/api/user/delete/${userId}`);
+      await axios.delete(`http://localhost:8000/user/delete/${userId}`);
+      toast.success('Reject successful!');
       fetchRequests();
     } catch (error) {
       console.error('Error rejecting request:', error);
