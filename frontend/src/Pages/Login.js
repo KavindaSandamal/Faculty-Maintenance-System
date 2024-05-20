@@ -91,7 +91,7 @@ function Login() {
 
                 <div data-mdb-input-init className="form-outline mb-4">
                   <input
-                    type="register"
+                    type="text"
                     id="form3Example3"
                     className="form-control form-control-lg"
                     onChange={(e) => setRegNo(e.target.value)}
@@ -100,9 +100,9 @@ function Login() {
                   <label className="form-label" htmlFor="form3Example3">
                     User Name
                   </label>
+                  <br />
                   <small style={{ color: 'red' }}>Enter your registration number</small>
                 </div>
-
                 <div data-mdb-input-init className="form-outline mb-3">
                   <input
                     type="password"
