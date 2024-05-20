@@ -110,7 +110,7 @@ export default function Home() {
         <section id="features" className="features">
           <div className="container" data-aos="fade-up">
             <div style={{ marginTop: '10px' }} className="row feature-icons" data-aos="fade-up">
-              <h3>Catch us on our Mobile App</h3>
+              <h3>Stay Tuned For Our Upcoming Mobile App</h3>
 
               <div className="row">
                 <div className="col-xl-4 text-center" data-aos="fade-right" data-aos-delay="100">
