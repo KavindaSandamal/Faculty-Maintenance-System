@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
+require('dotenv').config();
 
 // Initialize Google Cloud Storage client
 const storageClient = new Storage({
