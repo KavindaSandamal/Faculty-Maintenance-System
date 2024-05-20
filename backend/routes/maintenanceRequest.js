@@ -4,26 +4,18 @@ const multer = require('multer');
 const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
-require('dotenv').config();
-
-// Function to get Google Cloud Platform credentials
-const getGCPCredentials = () => {
-  return process.env.GCP_PRIVATE_KEY
-    ? {
-        credentials: {
-          client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
-          private_key: process.env.GCP_PRIVATE_KEY,
-        },
-        projectId: process.env.GCP_PROJECT_ID,
-      }
-    : {};
-};
 
 // Initialize Google Cloud Storage client
-const storageClient = new Storage(getGCPCredentials());
+const storageClient = new Storage({
+  credentials: {
+    client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace escape characters
+  },
+  projectId: process.env.GCP_PROJECT_ID,
+});
 
 // Get the bucket
-const bucket = storageClient.bucket(process.env.GOOGLE_CLOUD_BUCKET);
+const bucket = storageClient.bucket("fmms_image");
 
 // Configure Multer to use memory storage
 const upload = multer({
@@ -37,9 +29,9 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
   }
 
   try {
-    const { department, place, issueType, priority, description, submittedBy } = req.body;
+    const { department, place, issueType, priority, description } = req.body;
 
-    // Create a blob for the new file in the bucket
+    // Save the file to Google Cloud Storage
     const blob = bucket.file(Date.now() + path.extname(req.file.originalname));
     const blobStream = blob.createWriteStream({
       resumable: false,
@@ -61,7 +53,7 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
         priority,
         image: publicUrl, // Store the URL in the database
         description,
-        submittedBy, // Add submittedBy field
+        submittedBy: req.body.submittedBy, // Add submittedBy field
       });
 
       const savedMaintenanceRequest = await newMaintenanceRequest.save();
@@ -71,11 +63,9 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
 
     blobStream.end(req.file.buffer); // Use file buffer instead of file path
   } catch (error) {
-    console.error('Error in request handler:', error);
     res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
   }
 });
-
 
 
 
