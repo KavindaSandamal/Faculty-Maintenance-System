@@ -4,21 +4,45 @@ const multer = require('multer');
 const path = require('path');
 const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
+require('dotenv').config();
 
+// Function to get Google Cloud Platform credentials
+const getGCPCredentials = () => {
+  return process.env.GCP_PRIVATE_KEY
+    ? {
+        credentials: {
+          client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
+          private_key: process.env.GCP_PRIVATE_KEY,
+        },
+        projectId: process.env.GCP_PROJECT_ID,
+      }
+    : {};
+};
 
-// Configure Google Cloud Storage
-const storage = new Storage({
-  keyFilename: "./fmms-423817.json",
-  projectId: "fmms-423817", // Corrected project ID
-});
+// Initialize Google Cloud Storage client
+const storageClient = new Storage(getGCPCredentials());
 
-const coolFilesBucket = storage.bucket("fmms_image"); // Corrected bucket instance
+// Get the bucket and file
+const bucket = storageClient.bucket(process.env.GOOGLE_CLOUD_BUCKET);
+const file = bucket.file(process.env.GOOGLE_CLOUD_KEYFILE);
+
+// Save a file to Google Cloud Storage
+const saveFileToStorage = async (data, options) => {
+  try {
+    await file.save(data, options);
+    console.log('File saved successfully.');
+  } catch (error) {
+    console.error('Error saving file:', error);
+    throw new Error('Failed to save file.');
+  }
+};
 
 // Configure Multer to use memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
 });
+
 
 router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
   if (!req.file) {
