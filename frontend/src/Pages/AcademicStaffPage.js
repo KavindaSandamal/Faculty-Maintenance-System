@@ -37,18 +37,15 @@ function AcademicStaffPage() {
         </div>
 
         <ul className="list-unstyled components">
-            
-            <li>
-            <a href="/" style={{ color: "black" }}>Home</a>
-
-            </li>
-            <li >
-                <a style={{ color: "black" }}>Calander </a>
-            </li>
-           
-            <li >
-                <a  href="/Home#contact" style={{ color: "black" }}>Contact</a>
-            </li>
+          <li>
+            <Link to="/" style={{ color: 'black' }}>Home</Link>
+          </li>
+          <li>
+            <Link to="/calendar" style={{ color: 'black' }}>Calendar</Link>
+          </li>
+          <li>
+            <Link to="/#contact" style={{ color: 'black' }}>Contact</Link>
+          </li>
         </ul>
 
       </nav>
