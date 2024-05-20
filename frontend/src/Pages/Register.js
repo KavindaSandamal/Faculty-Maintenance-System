@@ -83,7 +83,7 @@ function Register() {
             status: '' // Reset status after submission
           });
   
-          navigate('/');
+          navigate('/Login');
           toast.success('Request Created Successfully');
         }
       })
