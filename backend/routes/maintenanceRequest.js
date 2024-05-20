@@ -82,7 +82,6 @@ router.get('/maintenanceRequests', async (req, res) => {
 });
 
 // Get a specific maintenance request
-
 router.get('/maintenanceRequest/:id', async (req, res) => {
   try {
     const requestId = req.params.id;
@@ -92,20 +91,18 @@ router.get('/maintenanceRequest/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Maintenance Request not found' });
     }
 
-    // Convert the Buffer to a base64-encoded string
-    const imageBase64 = maintenanceRequest.image.toString('base64');
-
-    // Create a new object with the image property set to the base64 string
-    const maintenanceRequestWithBase64Image = {
+    // No need to convert image to base64, just use the stored URL
+    const maintenanceRequestWithImageUrl = {
       ...maintenanceRequest.toObject(),
-      image: imageBase64,
+      // Assuming image field directly stores the URL
     };
 
-    return res.status(200).json({ success: true, maintenanceRequest: maintenanceRequestWithBase64Image });
+    return res.status(200).json({ success: true, maintenanceRequest: maintenanceRequestWithImageUrl });
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // Get all maintenance requests for a specific user
 router.get('/maintenanceRequests/:submittedBy', async (req, res) => {
