@@ -12,7 +12,7 @@ const getGCPCredentials = () => {
     ? {
         credentials: {
           client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
-          private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace newline characters for private key
+          private_key: process.env.GCP_PRIVATE_KEY,
         },
         projectId: process.env.GCP_PROJECT_ID,
       }
