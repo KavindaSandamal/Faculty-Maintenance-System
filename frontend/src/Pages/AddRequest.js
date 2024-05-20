@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +18,26 @@ function AddRequest() {
     description: '',
     submittedBy: Id,
   });
+
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await axios.get(`https://faculty-maintenance-system-api.vercel.app/api/user/${Id}`);
+        if (response.data.success) {
+          setUserRole(response.data.user.role);
+        } else {
+          toast.error('Failed to fetch user role');
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('Failed to fetch user role');
+      }
+    };
+
+    fetchUserRole();
+  }, [Id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +80,13 @@ function AddRequest() {
           submittedBy: Id,
         });
 
-        navigate(`/studentPage/${Id}`);
+        if (userRole === 'Student') {
+          navigate(`/studentPage/${Id}`);
+        } else if (userRole === 'Academic Staff') {
+          navigate(`/academicStaffPage/${Id}`);
+        } else {
+          navigate('/'); // default fallback if role is not recognized
+        }
       }
     } catch (error) {
       console.error(error);
@@ -74,7 +100,7 @@ function AddRequest() {
         <div className="form-outline mb-4">
           <input
             type="text"
-            value={formData.otherDepartment}
+            value={formData.otherDepartment || ''}
             className="form-control"
             onChange={handleInputChange}
             name="otherDepartment"
@@ -93,7 +119,7 @@ function AddRequest() {
         <div className="form-outline mb-4">
           <input
             type="text"
-            value={formData.otherIssueType}
+            value={formData.otherIssueType || ''}
             className="form-control"
             onChange={handleInputChange}
             name="otherIssueType"
@@ -105,7 +131,6 @@ function AddRequest() {
     }
     return null;
   };
-
 
   return (
     <body>
