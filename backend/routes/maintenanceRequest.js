@@ -12,7 +12,7 @@ const getGCPCredentials = () => {
     ? {
         credentials: {
           client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
-          private_key: process.env.GCP_PRIVATE_KEY,
+          private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace newline characters for private key
         },
         projectId: process.env.GCP_PROJECT_ID,
       }
@@ -22,20 +22,8 @@ const getGCPCredentials = () => {
 // Initialize Google Cloud Storage client
 const storageClient = new Storage(getGCPCredentials());
 
-// Get the bucket and file
+// Get the bucket
 const bucket = storageClient.bucket(process.env.GOOGLE_CLOUD_BUCKET);
-const file = bucket.file(process.env.GOOGLE_CLOUD_KEYFILE);
-
-// Save a file to Google Cloud Storage
-const saveFileToStorage = async (data, options) => {
-  try {
-    await file.save(data, options);
-    console.log('File saved successfully.');
-  } catch (error) {
-    console.error('Error saving file:', error);
-    throw new Error('Failed to save file.');
-  }
-};
 
 // Configure Multer to use memory storage
 const upload = multer({
@@ -43,17 +31,16 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
 });
 
-
 router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
   try {
-    const { department, place, issueType, priority, description } = req.body;
+    const { department, place, issueType, priority, description, submittedBy } = req.body;
 
-    // Save the file to Google Cloud Storage
-    const blob = coolFilesBucket.file(Date.now() + path.extname(req.file.originalname));
+    // Create a blob for the new file in the bucket
+    const blob = bucket.file(Date.now() + path.extname(req.file.originalname));
     const blobStream = blob.createWriteStream({
       resumable: false,
     });
@@ -64,7 +51,7 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
     });
 
     blobStream.on('finish', async () => {
-      const publicUrl = `https://storage.googleapis.com/${coolFilesBucket.name}/${blob.name}`;
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
 
       // Create a new maintenance request with the file URL
       const newMaintenanceRequest = new MaintenanceRequest({
@@ -74,7 +61,7 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
         priority,
         image: publicUrl, // Store the URL in the database
         description,
-        submittedBy: req.body.submittedBy, // Add submittedBy field
+        submittedBy, // Add submittedBy field
       });
 
       const savedMaintenanceRequest = await newMaintenanceRequest.save();
@@ -84,6 +71,7 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
 
     blobStream.end(req.file.buffer); // Use file buffer instead of file path
   } catch (error) {
+    console.error('Error in request handler:', error);
     res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
   }
 });
