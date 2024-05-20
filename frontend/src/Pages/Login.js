@@ -100,6 +100,7 @@ function Login() {
                   <label className="form-label" htmlFor="form3Example3">
                     User Name
                   </label>
+                  <small style={{ color: 'red' }}>Enter your registration number</small>
                 </div>
 
                 <div data-mdb-input-init className="form-outline mb-3">

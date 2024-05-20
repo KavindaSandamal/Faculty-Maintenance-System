@@ -138,6 +138,7 @@ function Register() {
                   name="regNo"
                   placeholder="Enter registration number"
                 />
+                <small style={{ color: 'red' }}>Format: EG/AC/AD/MD followed by numbers</small>
               </div>
               <div className="form-outline mb-4">
                 <input

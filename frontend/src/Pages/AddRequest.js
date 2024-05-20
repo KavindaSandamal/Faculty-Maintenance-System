@@ -185,7 +185,7 @@ function AddRequest() {
                     name="place"
                     placeholder="Enter the place"
                   />
-                  <label>Eg: Room-303</label>
+                  <small style={{ color: 'red' }}>eg: Room-101</small>
                 </div>
                 <div className="form-outline mb-4">
                   <select
@@ -223,7 +223,7 @@ function AddRequest() {
 
                 <div className="form-outline mb-4">
                   <input type="file" accept="image/*" onChange={handleImageChange} name="image" />
-                  <label>Max. 5mb</label>
+                  <small style={{ color: 'red' }}>Max: 5mb</small>
                 </div>
 
                 <div className="form-outline mb-4">
