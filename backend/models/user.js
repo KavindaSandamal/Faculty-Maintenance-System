@@ -7,12 +7,15 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   confirmPassword: { type: String, required: true },
   contactNumber: { type: String },
-  role: { type: String, required: true }, // Student, Faculty Staff, Maintenance Staff, Admin, System Administrator
+  role: { type: String, required: true }, 
   department: { type: String },
   status: {type: String, required: true},
   assignedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MaintenanceRequest' }],
-  // Add more fields as needed
 }, { timestamps: true });
+
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 const User = mongoose.model('User', userSchema);
 

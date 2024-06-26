@@ -5,7 +5,6 @@ import { FaUser } from 'react-icons/fa'; // Import the user icon from Font Aweso
 import axios from 'axios'; // Import axios for making HTTP requests
 import UpdateFullNameModal from './UpdateFullNameModal';
 import UpdateEmailModal from './UpdateEmailModal';
-import UpdatePasswordModal from './UpdatePasswordModal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -121,7 +120,6 @@ export default function Header() {
                 <div className={classes.secondDropdown}>
                   <button onClick={() => toggleModal('UpdateFullName')}>Update Full Name</button>
                   <button onClick={() => toggleModal('UpdateEmail')}>Update Email</button>
-                  <button onClick={() => toggleModal('UpdatePassword')}>Update Password</button>
                 </div>
               )}
             </div>
@@ -134,7 +132,6 @@ export default function Header() {
       )}
       {showModal && selectedModal === 'UpdateFullName' && <UpdateFullNameModal currentUser={currentUser} onClose={toggleModal} />}
       {showModal && selectedModal === 'UpdateEmail' && <UpdateEmailModal currentUser={currentUser} onClose={toggleModal} />}
-      {showModal && selectedModal === 'UpdatePassword' && <UpdatePasswordModal currentUser={currentUser} onClose={toggleModal} />}
        </div>
        </div>
        

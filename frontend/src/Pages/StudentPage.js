@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Collapse } from 'bootstrap';
+import './styles.css';
+import ProfileEditModal from './ProfileEditModal';
 import MaintenanceRequests from './MaintenanceRequests';
 import StudentOngoingMaintenance from './StudentOngoingMaintenance';
 import StudentNotifications from './StudentNotifications';
-import { Link, useLocation } from 'react-router-dom';
-
-import { Collapse } from 'bootstrap'; // Import the Collapse component from Bootstrap
-import './styles.css';
 
 function StudentPage() {
   const location = useLocation();
   const userId = location.pathname.split('/').pop();
   const [activeTab, setActiveTab] = useState('maintenanceRequests');
+  const [isOpen, setIsOpen] = useState(false); // State for modal visibility
+  const [currentUser, setCurrentUser] = useState(null); // State for current user data
 
   useEffect(() => {
-    const collapsible = document.querySelectorAll('.collapse');
-    collapsible.forEach(collapse => {
-      new Collapse(collapse);
-    });
-  }, []);
+    // Simulating fetching current user data (replace with actual fetching logic)
+    // Example: Fetch user data from an API endpoint
+    const fetchCurrentUser = async () => {
+      try {
+        // Replace with actual API call to fetch user data
+        const response = await fetch(`https://faculty-maintenance-system-api.vercel.app/api/user/${userId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentUser(data); // Set current user data in state
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Handle error (e.g., show error message)
+      }
+    };
+
+    fetchCurrentUser(); // Fetch current user data when component mounts
+  }, [userId]);
 
   const toggleSidebar = () => {
     const sidebar = document.getElementById('sidebar');
@@ -26,6 +43,10 @@ function StudentPage() {
     } else {
       sidebar.classList.add('active');
     }
+  };
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -40,7 +61,9 @@ function StudentPage() {
             <Link to="/" style={{ color: 'black' }}>Home</Link>
           </li>
           <li>
-            <Link to="/calendar" style={{ color: 'black' }}>Calendar</Link>
+            <Link onClick={toggleModal} style={{ color: 'black' }}>
+              Profile
+            </Link>
           </li>
           <li>
             <Link to="/#contact" style={{ color: 'black' }}>Contact</Link>
@@ -132,6 +155,11 @@ function StudentPage() {
           </div>
         </div>
       </div>
+
+      {/* Profile Edit Modal */}
+      {currentUser && (
+        <ProfileEditModal isOpen={isOpen} toggleModal={toggleModal} userId={userId} currentUser={currentUser} />
+      )}
     </div>
   );
 }
