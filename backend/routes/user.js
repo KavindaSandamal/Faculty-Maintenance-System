@@ -5,28 +5,26 @@ const bcrypt = require('bcrypt');
 
 // Create a new user
 router.post('/register/user', async (req, res) => {
-  const {
-    fullName,
-    email,
-    regNo,
-    role,
-    department,
-    contactNumber,
-    password,
-    confirmPassword,
-    status
-  } = req.body;
-
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    return res.status(400).json({ success: false, error: 'Passwords do not match' });
-  }
-
   try {
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the saltRounds
+    const {
+      fullName,
+      email,
+      regNo,
+      role,
+      department,
+      contactNumber,
+      password,
+      confirmPassword,
+      status
+    } = req.body;
 
-    // Create a new user with the hashed password
+    // Check if the registration number already exists
+    const existingUser = await User.findOne({ regNo });
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: 'User exists, please enter a different registration number' });
+    }
+
+    // Create a new user with the provided data
     const newUser = new User({
       fullName,
       email,
@@ -34,20 +32,23 @@ router.post('/register/user', async (req, res) => {
       role,
       department,
       contactNumber,
-      password: hashedPassword,
-      confirmPassword: hashedPassword,
+      password,
+      confirmPassword,
       status
     });
 
     // Save the user to the database
     await newUser.save();
 
-    res.status(201).json({ success: true, message: 'User created successfully' });
+    // Respond with success message
+    res.json({ success: true, message: 'User created successfully' });
   } catch (error) {
-    console.error('Error creating user:', error);
+    // Handle errors
+    console.error(error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
 
 
 
