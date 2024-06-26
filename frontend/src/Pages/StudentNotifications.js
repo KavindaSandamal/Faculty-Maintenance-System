@@ -3,6 +3,8 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function StudentNotifications({ userId }) {
   const [notifications, setNotifications] = useState([]);
@@ -54,6 +56,7 @@ function StudentNotifications({ userId }) {
       });
       console.log('Review submitted:', response.data);
       handleClose();
+      toast.success('Feedbck Send Successfully');
     } catch (error) {
       console.error('Error submitting review:', error);
     }

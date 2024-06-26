@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 function Reviews() {
-  const { notificationId, userId } = useParams();  // Assuming you have both params
+  const { notificationId, userId } = useParams(); 
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ function Reviews() {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(`https://faculty-maintenance-system-api.vercel.app/api/reviews`, {
-          params: { notificationId, userId }  // Pass params to the query string
+          params: { notificationId, userId }  
         });
         if (response.data && response.data.reviews) {
           setReviews(response.data.reviews);
@@ -27,7 +27,7 @@ function Reviews() {
     };
 
     fetchReviews();
-  }, [notificationId, userId]);  // Update dependency array
+  }, [notificationId, userId]);  
 
   return (
     <div>
