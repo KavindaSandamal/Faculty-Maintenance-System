@@ -79,7 +79,7 @@ function Register() {
             status: ''
           });
   
-          navigate('/login');
+          navigate('/Login');
           toast.success('User Created Successfully');
         }
       })
