@@ -5,6 +5,8 @@ import { ToastContainer } from 'react-toastify';
 import AppRoutes from "./AppRoutes";
 import './App.css';
 import Footer from "./Components/Footer/Footer";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   

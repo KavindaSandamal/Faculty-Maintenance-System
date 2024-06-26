@@ -10,6 +10,7 @@ const app = express();
 const userRoute = require('./routes/user');
 const maintenanceRequestRoute = require('./routes/maintenanceRequest');
 const notificationRoute = require('./routes/notification');
+const reviewRoutes = require('./routes/review');
 
 // Middleware
 app.use(bodyParser.json());
@@ -22,6 +23,7 @@ app.use(cors({
 app.use('/api', userRoute);
 app.use('/api', maintenanceRequestRoute);
 app.use('/api', notificationRoute);
+app.use('/api', reviewRoutes);
 
 // Default route for root path
 app.get('/', (req, res) => {

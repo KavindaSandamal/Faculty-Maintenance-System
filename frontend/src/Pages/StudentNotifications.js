@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 function StudentNotifications({ userId }) {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [review, setReview] = useState('');
+  const [selectedNotification, setSelectedNotification] = useState(null);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(`https://faculty-maintenance-system-api.vercel.app/api/notifications/${userId}`);
-        // Assuming notifications are returned in response.data
         if (response.data && response.data.notifications) {
           setNotifications(response.data.notifications);
         } else {
@@ -30,6 +35,30 @@ function StudentNotifications({ userId }) {
     console.log('Notifications:', notifications);
   }, [notifications]);
 
+  const handleAddReviewClick = (notification) => {
+    setSelectedNotification(notification);
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+    setReview('');
+  };
+
+  const handleSaveReview = async () => {
+    try {
+      const response = await axios.post('https://faculty-maintenance-system-api.vercel.app/api/reviews', {
+        userId,
+        notificationId: selectedNotification._id,
+        message: review
+      });
+      console.log('Review submitted:', response.data);
+      handleClose();
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
+  };
+
   return (
     <div>
       {loading ? (
@@ -38,29 +67,66 @@ function StudentNotifications({ userId }) {
         <p>{error}</p>
       ) : notifications && notifications.length > 0 ? (
         <div className="table-responsive">
-        <table className="table table-dark table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notifications.map((notification, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{notification.message}</td>
+          <table className="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Message</th>
+                <th>Button</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {notifications.map((notification, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{notification.message}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn btn-primary btn-lg"
+                      style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                      onClick={() => handleAddReviewClick(notification)}
+                    >
+                      Add Review
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <p>No notifications to display</p>
       )}
+
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Feedback</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="reviewText">
+              <Form.Label>Add Feedback</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your review"
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSaveReview}>
+            Send Feedback
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
-  
 }
 
 export default StudentNotifications;
