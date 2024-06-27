@@ -66,7 +66,7 @@ function OngoingMaintenance() {
   const calculatePendingDays = (createdAt) => {
     const today = new Date();
     const createdDate = new Date(createdAt);
-    const differenceInTime = today.getTime() - createdDate.getTime();
+    const differenceInTime = createdDate.getTime() - today.getTime();
     const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
@@ -82,6 +82,7 @@ function OngoingMaintenance() {
           status: 'Completed'
         });
 
+        // Send a notification when the task is completed
         await axios.post('https://faculty-maintenance-system-api.vercel.app/api/sendNotification', {
           userId: updatedMaintenance[index].submittedBy,
           maintenanceId: updatedMaintenance[index]._id,
@@ -110,6 +111,7 @@ function OngoingMaintenance() {
         <thead>
           <tr>
             <th>Description</th>
+            <th>Place</th>
             <th>Status</th>
             <th>Progress</th>
           </tr>
@@ -118,8 +120,9 @@ function OngoingMaintenance() {
           {ongoingMaintenance.map((task, index) => (
             <tr key={index}>
               <td>{task.description}</td>
+              <td>{task.place}</td>
               <td>
-       
+                {/* Displaying pending days for each maintenance task */}
                 {updatedDates[index] && updatedDates[index].map((filteredNotification, notificationIndex) => (
                   <div key={notificationIndex}>
                     In the process for <span style={{ color: 'green' }}>{calculatePendingDays(filteredNotification.createdAt)}</span> Days
