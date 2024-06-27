@@ -89,13 +89,13 @@ function Register() {
   };
 
   return (
-    <section id="hero" className="hero  d-flex align-items-center">
+    <section id="hero" className="hero d-flex align-items-center py-5">
       <div className="container">
         <div className="row">
           <div className="col-lg-6 d-flex flex-column justify-content-center">
             <form onSubmit={onSubmit}>
               <div className="divider d-flex align-items-center my-4">
-                <p className="text-center fw-bold mx-3 mb-0" style={{marginTop:'-70px'}}>Sign in with</p>
+                <p className="text-center fw-bold mx-3 mb-0" style={{ marginTop: '-70px' }}>Sign in with</p>
               </div>
               <div className="row">
                 <div className="col-md-6 mb-4">
@@ -131,7 +131,12 @@ function Register() {
                   placeholder="Enter registration number"
                   required
                 />
-                <small style={{ color: 'black' }}>Format: EG/AC/AD/MD followed by numbers</small>
+                <small className="d-block text-muted">Format: EG/AC/AD/MD followed by numbers</small>
+                <small className="d-block text-muted">
+                  EG: Student<br />
+                  AC: Academic Staff<br />
+                  MD: Maintenance Division
+                </small>
               </div>
               <div className="row">
                 <div className="col-md-6 mb-4">
@@ -209,7 +214,7 @@ function Register() {
             </form>
           </div>
           <div className="col-lg-6 hero-img d-flex align-items-center justify-content-center">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Sample image"/>
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Sample image" />
           </div>
         </div>
       </div>

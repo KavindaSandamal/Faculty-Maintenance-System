@@ -1,13 +1,11 @@
 .header {
   display: flex;
-  position: relative;
   width: 100%;
-  margin: 0;
   padding: 10px 25px;
   justify-content: space-between;
   align-items: center;
-  background: var(--Base-White, #FFF);
-  box-shadow: 0px 4px 40px 0px rgba(0, 0, 0, 0.10);
+  background: #FFF;
+  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -16,37 +14,38 @@
   padding: 10px 0;
   justify-content: space-between;
   align-items: center;
-  flex-shrink: 0;
-  margin: 0 auto;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 .FMMS {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  flex-shrink: 0;
   color: #000;
-  text-align: justify;
-  font-family: Inter;
+  font-family: 'Inter', sans-serif;
   font-size: 25px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
-  margin-right: 20px;
   text-transform: uppercase;
+  margin-right: 20px;
 }
 
 .Home,
 .About_Us,
 .Dashboard {
-  color: var(--Gray-gray-700, #4A5568);
-  font-family: Inter;
+  color: #4A5568;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
-  font-style: normal;
   font-weight: 500;
-  line-height: 25px;
   margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.Home:hover,
+.About_Us:hover,
+.Dashboard:hover {
+  color: #007bff;
 }
 
 .button_login {
@@ -57,10 +56,15 @@
   gap: 10px;
   border-radius: 5px;
   background: linear-gradient(225deg, #6675F7 0%, #57007B 100%);
+  color: #FFF;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.login_text_2 {
-  color: #FFF;
+.button_login:hover {
+  background: linear-gradient(225deg, #57007B 0%, #6675F7 100%);
+  transform: translateY(-2px);
 }
 
 .cd__main {
@@ -71,14 +75,16 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 10px); 
-  right: 0; 
-  background-color: white;
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000; 
-  display: none; 
+  z-index: 1000;
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+  padding: 10px;
 }
 
 .currentUser .dropdown {
@@ -87,68 +93,152 @@
 
 .currentUser {
   display: flex;
-  align-items: center; 
+  align-items: center;
+  flex-direction: column; /* Added to align items vertically */
+  position: relative;
 }
 
 .profileIcon {
   cursor: pointer;
   margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .userName {
   font-weight: bold;
-  font-family: 500;
-  font-style: normal;
-  color: var(--Gray-gray-700, #4A5568);
+  font-family: 'Inter', sans-serif;
+  color: #4A5568;
   font-size: 16px;
+  margin-bottom: 10px; /* Added margin to create space between username and buttons */
 }
 
+.secondDropdown {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
 
+.dropdown button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  text-align: left;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.dropdown button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.currentUser .secondDropdown {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
   .container {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 10px;
   }
   
   .FMMS {
-      font-size: 20px;
-      margin-right: 0;
-      margin-bottom: 10px;
+    font-size: 20px;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
   .Home,
   .About_Us,
   .Dashboard {
-      margin: 5px 0;
-      font-size: 14px;
+    margin: 5px 0;
+    font-size: 14px;
   }
 
   .currentUser {
-      margin-top: 10px;
+    margin-top: 10px;
   }
 
   .dropdown {
-      right: 0; 
+    right: 0;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-      padding: 0 5px;
+    padding: 0 5px;
   }
   
   .FMMS {
-      font-size: 18px;
+    font-size: 18px;
   }
 
   .Home,
   .About_Us,
-  .Dashboard {
-      font-size: 12px;
+  .Dashboard,
+  .Login {
+    margin: 0 10px;
+    font-size: 18px;
+    font-weight: bold;
   }
 
   .currentUser {
-      font-size: 14px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .profileIcon {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .userName {
+    margin-left: 10px;
+  }
+
+  .dropdown,
+  .secondDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .dropdown button,
+  .secondDropdown button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: none;
+    text-align: left;
+  }
+
+  .dropdown button:hover,
+  .secondDropdown button:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .btn {
+    margin: 5px 0;
   }
 }
