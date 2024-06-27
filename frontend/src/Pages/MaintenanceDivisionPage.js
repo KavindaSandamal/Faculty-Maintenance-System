@@ -18,7 +18,7 @@ function StudentPage() {
     const fetchCurrentUser = async () => {
       try {
 
-        const response = await fetch(`https://faculty-maintenance-system-api.vercel.app/api/user/${userId}`);
+        const response = await fetch(`http://localhost:8000/user/${userId}`);
         if (response.ok) {
           const data = await response.json();
           setCurrentUser(data); 
