@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Classes from '../Pages/register.module.css';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,11 +45,11 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-  
+
     const { fullName, email, regNo, role, department, contactNumber, password, confirmPassword } = formData;
-  
+
     const status = formData.status || (role === 'Maintenance Division' ? 'inactive' : 'active');
-  
+
     const data = {
       fullName,
       email,
@@ -62,9 +61,10 @@ function Register() {
       confirmPassword,
       status
     };
-  
+
     axios.post('https://faculty-maintenance-system-api.vercel.app/api/register/user', data)
       .then((res) => {
+        console.log(res.data);
         if (res.data.success) {
           alert('User Created Successfully');
           setFormData({
@@ -78,39 +78,27 @@ function Register() {
             confirmPassword: '',
             status: ''
           });
-  
-          navigate('/Login');
+
+          navigate('/');
           toast.success('User Created Successfully');
         }
       })
       .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error) {
-          toast.error(error.response.data.error);
-        } else {
-          toast.error('An error occurred. Please try again.');
-        }
+        console.error('Error:', error.response.data.error);
       });
   };
-  
 
   return (
-    <body>
-      <section className="vh-100">
-        <div className="container">
-          <div className="row justify-content-center align-items-center h-100">
-            <div className="col-md-6">
-              <img
-                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                className="img-fluid"
-                alt="Sample image"
-              />
-            </div>
-            <div className="col-md-6">
-              <form onSubmit={onSubmit}>
-                <div className="text-center mb-4">
-                  <h2>Sign Up</h2>
-                </div>
-                <div className="form-outline mb-4">
+    <section id="hero" className="hero  d-flex align-items-center">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6 d-flex flex-column justify-content-center">
+            <form onSubmit={onSubmit}>
+              <div className="divider d-flex align-items-center my-4">
+                <p className="text-center fw-bold mx-3 mb-0" style={{marginTop:'-70px'}}>Sign in with</p>
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-4">
                   <input
                     type="text"
                     value={formData.fullName}
@@ -118,9 +106,10 @@ function Register() {
                     onChange={handleInputChange}
                     name="fullName"
                     placeholder="Enter full name"
+                    required
                   />
                 </div>
-                <div className="form-outline mb-4">
+                <div className="col-md-6 mb-4">
                   <input
                     type="email"
                     value={formData.email}
@@ -128,20 +117,24 @@ function Register() {
                     onChange={handleInputChange}
                     name="email"
                     placeholder="Enter email"
+                    required
                   />
                 </div>
-                <div className="form-outline mb-4">
-                  <input
-                    type="text"
-                    value={formData.regNo}
-                    className="form-control"
-                    onChange={handleInputChange}
-                    name="regNo"
-                    placeholder="Enter registration number"
-                  />
-                  <small style={{ color: 'red' }}>Format: EG/AC/AD/MD followed by numbers</small>
-                </div>
-                <div className="form-outline mb-4">
+              </div>
+              <div className="form-outline mb-4">
+                <input
+                  type="text"
+                  value={formData.regNo}
+                  className="form-control"
+                  onChange={handleInputChange}
+                  name="regNo"
+                  placeholder="Enter registration number"
+                  required
+                />
+                <small style={{ color: 'black' }}>Format: EG/AC/AD/MD followed by numbers</small>
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-4">
                   <input
                     type="text"
                     value={formData.role}
@@ -152,12 +145,13 @@ function Register() {
                     disabled
                   />
                 </div>
-                <div className="form-outline mb-4">
+                <div className="col-md-6 mb-4">
                   <select
                     className="form-control"
                     value={formData.department}
                     onChange={handleInputChange}
                     name="department"
+                    required
                   >
                     <option value="">Select department</option>
                     <option value="Electrical and Information Department">Electrical and Information Department</option>
@@ -169,7 +163,9 @@ function Register() {
                     <option value="Admin Sector">Admin Sector</option>
                   </select>
                 </div>
-                <div className="form-outline mb-4">
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-4">
                   <input
                     type="text"
                     value={formData.contactNumber}
@@ -177,9 +173,10 @@ function Register() {
                     onChange={handleInputChange}
                     name="contactNumber"
                     placeholder="Enter contact number"
+                    required
                   />
                 </div>
-                <div className="form-outline mb-4">
+                <div className="col-md-6 mb-4">
                   <input
                     type="password"
                     value={formData.password}
@@ -187,9 +184,12 @@ function Register() {
                     onChange={handleInputChange}
                     name="password"
                     placeholder="Enter password"
+                    required
                   />
                 </div>
-                <div className="form-outline mb-4">
+              </div>
+              <div className="row">
+                <div className="col-md-6 mb-4">
                   <input
                     type="password"
                     value={formData.confirmPassword}
@@ -197,17 +197,23 @@ function Register() {
                     onChange={handleInputChange}
                     name="confirmPassword"
                     placeholder="Confirm password"
+                    required
                   />
                 </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-secondary btn-lg">Sign Up</button>
+                <div className="col-md-6 mb-4 d-flex align-items-end">
+                  <div className="text-center">
+                    <button type="submit" className="btn btn-primary btn-lg">Sign Up</button>
+                  </div>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
+          </div>
+          <div className="col-lg-6 hero-img d-flex align-items-center justify-content-center">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" className="img-fluid" alt="Sample image"/>
           </div>
         </div>
-      </section>
-    </body>
+      </div>
+    </section>
   );
 }
 

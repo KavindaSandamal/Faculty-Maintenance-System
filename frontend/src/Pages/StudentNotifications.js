@@ -55,8 +55,8 @@ function StudentNotifications({ userId }) {
         message: review
       });
       console.log('Review submitted:', response.data);
-      handleClose();
       toast.success('Feedbck Send Successfully');
+      handleClose();
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -104,12 +104,12 @@ function StudentNotifications({ userId }) {
 
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Feedback</Modal.Title>
+          <Modal.Title>Add Review</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group controlId="reviewText">
-              <Form.Label>Add Feedback</Form.Label>
+              <Form.Label>Review</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your review"
@@ -124,7 +124,7 @@ function StudentNotifications({ userId }) {
             Close
           </Button>
           <Button variant="primary" onClick={handleSaveReview}>
-            Send Feedback
+            Send Review
           </Button>
         </Modal.Footer>
       </Modal>
