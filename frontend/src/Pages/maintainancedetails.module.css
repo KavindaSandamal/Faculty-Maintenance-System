@@ -1,9 +1,7 @@
-/* Body */
 body {
   background: #eee;
 }
 
-/* Cards */
 .card {
   box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
   position: relative;
@@ -17,13 +15,11 @@ body {
   border-radius: 1rem;
 }
 
-/* Links */
 a {
   color: #5465ff;
   text-decoration: none;
 }
 
-/* Text */
 .text-reset {
   --bs-text-opacity: 1;
   color: inherit!important;

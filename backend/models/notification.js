@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 
-// Define the notification schema
 const notificationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User collection, assuming you have a User model
+    ref: 'User', 
     required: true
   },
   maintenanceId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'MaintenanceRequest', // Reference to the User collection, assuming you have a MaintenanceRequest model
+    ref: 'MaintenanceRequest', 
     required: true
   },
   message: {
@@ -22,7 +21,6 @@ const notificationSchema = new mongoose.Schema({
   }
 });
 
-// Define the Notification model
 const Notification = mongoose.model('Notification', notificationSchema);
 
 module.exports = Notification;

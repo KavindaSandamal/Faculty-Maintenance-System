@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import classes from './modal.module.css'; // Import your CSS file for modal styling
+import classes from './modal.module.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,21 +9,21 @@ const UpdateEmailModal = ({ currentUser, onClose }) => {
 
   useEffect(() => {
     if (currentUser) {
-      setNewEmail(''); // Set newEmail state to empty initially
+      setNewEmail(''); 
     }
   }, [currentUser]);
 
   const handleChange = (event) => {
-    setNewEmail(event.target.value); // Update the newEmail state as the user types
+    setNewEmail(event.target.value); 
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Send a PUT request to update the email in the database
+
       await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/update/${currentUser._id}`, { email: newEmail });
-      onClose(); // Close the modal after successful update
-      toast.success('Email updated successfully'); // Display success toast message
+      onClose(); 
+      toast.success('Email updated successfully'); 
     } catch (error) {
       console.error('Error updating email:', error);
     }

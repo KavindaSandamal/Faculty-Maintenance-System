@@ -42,7 +42,6 @@ function Login() {
   
       if (response.data.success) {
         const { user } = response.data;
-        // Check if the user object contains the 'status' field
         if ('status' in user) {
           if (user.status === 'active') {
             handleLogin(user);
@@ -51,7 +50,6 @@ function Login() {
             toast.error('Your account is inactive. Please contact an administrator.');
           }
         } else {
-          // If the 'status' field is not provided, consider the account active
           handleLogin(user);
           toast.success('Login successful!');
         }

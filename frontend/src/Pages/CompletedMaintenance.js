@@ -38,7 +38,7 @@ function CompletedMaintenance() {
           completedDates.push(filteredNotifications);
         }
         setCompletedDates(completedDates);
-        // Log notifications
+        
         completedDates.forEach((existingNotifications) => {
           console.log(existingNotifications);
         });
@@ -56,7 +56,7 @@ function CompletedMaintenance() {
 
   const completeDays = (createdAt) => {
     const dayCompleted = new Date(createdAt);
-    return dayCompleted.toDateString(); // Convert date to string for display
+    return dayCompleted.toDateString();
   };
 
   return (
@@ -74,7 +74,6 @@ function CompletedMaintenance() {
               <tr key={index}>
                 <td>{task.description}</td>
                 <td>
-                  {/* Rendering completed date for each maintenance task */}
                   {completedDates[index] && completedDates[index].map((filteredNotification, notificationIndex) => (
                     <div key={notificationIndex}>
                       <span style={{ color: 'green' }}>{completeDays(filteredNotification.createdAt)}</span>

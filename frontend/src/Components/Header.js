@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom'; 
 import classes from './header.module.css'; 
-import { FaUser } from 'react-icons/fa'; // Import the user icon from Font Awesome
-import axios from 'axios'; // Import axios for making HTTP requests
+import { FaUser } from 'react-icons/fa'; 
+import axios from 'axios'; 
 import UpdateFullNameModal from './UpdateFullNameModal';
 import UpdateEmailModal from './UpdateEmailModal';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Header() {
-  const [showDropdown, setShowDropdown] = useState(false); // State to manage dropdown visibility
-  const [showSecondDropdown, setShowSecondDropdown] = useState(false); // State to manage second dropdown visibility
-  const [currentUser, setCurrentUser] = useState(null); // State to store current user
-  const location = useLocation(); // Hook to access the current URL
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showSecondDropdown, setShowSecondDropdown] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const location = useLocation(); 
   const [showModal, setShowModal] = useState(false);
   const [selectedModal, setSelectedModal] = useState(null);
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -38,35 +38,33 @@ export default function Header() {
   }, [location.pathname]);
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown); // Toggle the first dropdown visibility
+    setShowDropdown(!showDropdown); 
   };
 
   const toggleSecondDropdown = () => {
-    setShowSecondDropdown(!showSecondDropdown); // Toggle the second dropdown visibility
+    setShowSecondDropdown(!showSecondDropdown);
   };
 
   const toggleModal = (modalName) => {
-    setShowModal(!showModal); // Toggle the modal visibility
-    setSelectedModal(modalName); // Set the selected modal
-    setShowSecondDropdown(false); // Close the second dropdown when opening the modal
+    setShowModal(!showModal); 
+    setSelectedModal(modalName); 
+    setShowSecondDropdown(false); 
   };
 
   const getUserIdFromUrl = (pathname) => {
     const parts = pathname.split('/');
-    return parts[parts.length - 1]; // Last segment is the user ID
+    return parts[parts.length - 1]; 
   };
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
-    navigate('/'); // Redirect to home page
+    navigate('/'); 
     toast.success('Logout successfully');
   };
 
   const handleDashboardClick = () => {
-    // Check if user is logged in
     if (currentUser) {
-      // Redirect based on user role
       if (currentUser.role === 'Student') {
         navigate(`/studentPage/${currentUser._id}`);
       } else if (currentUser.role === 'Academic Staff') {
@@ -75,7 +73,6 @@ export default function Header() {
         navigate(`/maintenanceDivisionPage/${currentUser._id}`);
       }
     } else {
-      // If user is not logged in, navigate to the login page
       navigate('/Login');
     }
   };

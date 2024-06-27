@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const maintenanceRequestSchema = new mongoose.Schema({
   department: {
     type: String,
-    //required: true,
   },
   place: {
     type: String,
@@ -18,8 +17,8 @@ const maintenanceRequestSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: String, // Change the type to Buffer to store binary data
-    contentType: String, // Store the content type of the image
+    type: String, 
+    contentType: String, 
   },
   description: {
     type: String,
@@ -27,7 +26,7 @@ const maintenanceRequestSchema = new mongoose.Schema({
   },
   submittedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the user who submitted the request
+    ref: 'User', 
     required: true,
   },
   status: {

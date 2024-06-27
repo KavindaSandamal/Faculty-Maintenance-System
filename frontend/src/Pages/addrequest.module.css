@@ -6,7 +6,7 @@
   background: rgba(100, 40, 137, 0.08);
   margin-left: 120px;
   margin-top: -40px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .auth_form_container_text{
@@ -26,8 +26,8 @@
 
   font-size: 24px;
   font-weight: 500;
-  line-height: 1.97523; /* Adjusted line-height */
-  margin-bottom: 10px; /* Add some bottom margin for spacing */
+  line-height: 1.97523; 
+  margin-bottom: 10px;
 }
 
 .request_container {
@@ -35,7 +35,7 @@
   height: 48px;
   flex-shrink: 0;
   stroke-width: 1px;
-  stroke: #000; /* Not sure if stroke is supported in this context, consider using border instead */
+  stroke: #000;
 }
 
 .mini_container {
@@ -49,17 +49,15 @@
   width: 209px;
   height: 62px;
   flex-shrink: 0;
-  border-radius: 10px; /* Making the button slightly rounded */
+  border-radius: 10px;
   background: rgb(196, 193, 193);
   margin-bottom: 30px;
- /* Adding text color */
-  /* Adjusting font size */
-  font-weight: bold; /* Making the text bold */
+  font-weight: bold; 
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: uppercase; /* Uppercasing the text */
-  cursor: pointer; /* Adding cursor pointer */
+  text-transform: uppercase;
+  cursor: pointer; 
 
 
 padding: 20px;

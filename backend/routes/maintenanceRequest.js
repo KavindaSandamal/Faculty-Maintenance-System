@@ -6,22 +6,20 @@ const { Storage } = require('@google-cloud/storage');
 const MaintenanceRequest = require('../models/maintenanceRequest');
 require('dotenv').config();
 
-// Initialize Google Cloud Storage client
 const storageClient = new Storage({
   credentials: {
     client_email: process.env.GCP_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace escape characters
+    private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'), 
   },
   projectId: process.env.GCP_PROJECT_ID,
 });
 
-// Get the bucket
+
 const bucket = storageClient.bucket("fmms_image");
 
-// Configure Multer to use memory storage
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // limit files to 5 MB
+  limits: { fileSize: 5 * 1024 * 1024 }, 
 });
 
 router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
@@ -32,7 +30,6 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
   try {
     const { department, place, issueType, priority, description } = req.body;
 
-    // Save the file to Google Cloud Storage
     const blob = bucket.file(Date.now() + path.extname(req.file.originalname));
     const blobStream = blob.createWriteStream({
       resumable: false,
@@ -46,15 +43,15 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
     blobStream.on('finish', async () => {
       const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
 
-      // Create a new maintenance request with the file URL
+
       const newMaintenanceRequest = new MaintenanceRequest({
         department,
         place,
         issueType,
         priority,
-        image: publicUrl, // Store the URL in the database
+        image: publicUrl, 
         description,
-        submittedBy: req.body.submittedBy, // Add submittedBy field
+        submittedBy: req.body.submittedBy, 
       });
 
       const savedMaintenanceRequest = await newMaintenanceRequest.save();
@@ -62,16 +59,13 @@ router.post('/maintenanceRequest', upload.single('image'), async (req, res) => {
       res.json({ success: 'Maintenance Request Created Successfully', newMaintenanceRequest: savedMaintenanceRequest });
     });
 
-    blobStream.end(req.file.buffer); // Use file buffer instead of file path
+    blobStream.end(req.file.buffer); 
   } catch (error) {
     res.status(400).json({ message: 'Maintenance Request creation unsuccessful', error: error.message });
   }
 });
 
 
-
-
-// Get all maintenance requests
 router.get('/maintenanceRequests', async (req, res) => {
   try {
     const maintenanceRequests = await MaintenanceRequest.find().exec();
@@ -81,7 +75,6 @@ router.get('/maintenanceRequests', async (req, res) => {
   }
 });
 
-// Get a specific maintenance request
 router.get('/maintenanceRequest/:id', async (req, res) => {
   try {
     const requestId = req.params.id;
@@ -91,10 +84,8 @@ router.get('/maintenanceRequest/:id', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Maintenance Request not found' });
     }
 
-    // No need to convert image to base64, just use the stored URL
     const maintenanceRequestWithImageUrl = {
       ...maintenanceRequest.toObject(),
-      // Assuming image field directly stores the URL
     };
 
     return res.status(200).json({ success: true, maintenanceRequest: maintenanceRequestWithImageUrl });
@@ -104,7 +95,6 @@ router.get('/maintenanceRequest/:id', async (req, res) => {
 });
 
 
-// Get all maintenance requests for a specific user
 router.get('/maintenanceRequests/:submittedBy', async (req, res) => {
   try {
     const submittedBy = req.params.submittedBy;
@@ -116,7 +106,6 @@ router.get('/maintenanceRequests/:submittedBy', async (req, res) => {
 });
 
 
-// Update a maintenance request
 router.put('/maintenanceRequest/update/:id', async (req, res) => {
   try {
     await MaintenanceRequest.findByIdAndUpdate(req.params.id, { $set: req.body }).exec();
@@ -126,7 +115,6 @@ router.put('/maintenanceRequest/update/:id', async (req, res) => {
   }
 });
 
-// Delete a maintenance request
 router.delete('/maintenanceRequest/delete/:id', async (req, res) => {
   try {
     const deleteMaintenanceRequest = await MaintenanceRequest.findByIdAndRemove(req.params.id).exec();
@@ -153,22 +141,17 @@ router.post('/maintenanceRequest/save', async (req, res) => {
 
 router.post('/maintenanceRequest/:id/approve', async (req, res) => {
   try {
-    // Find the maintenance request by ID
     const maintenanceRequest = await MaintenanceRequest.findById(req.params.id);
 
-    // If maintenance request is not found, return 404
     if (!maintenanceRequest) {
       return res.status(404).json({ success: false, message: 'Maintenance request not found' });
     }
 
-    // Update the status of the maintenance request to "On Going"
     maintenanceRequest.status = 'In Progress';
     await maintenanceRequest.save();
 
-    // Send a success response
     res.status(200).json({ success: true, message: 'Maintenance request approved successfully' });
   } catch (error) {
-    // If an error occurs, send a 500 internal server error response
     console.error('Error approving maintenance request:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
@@ -176,22 +159,16 @@ router.post('/maintenanceRequest/:id/approve', async (req, res) => {
 
 router.post('/maintenanceRequest/:id/completed', async (req, res) => {
   try {
-    // Find the maintenance request by ID
     const maintenanceRequest = await MaintenanceRequest.findById(req.params.id);
-
-    // If maintenance request is not found, return 404
     if (!maintenanceRequest) {
       return res.status(404).json({ success: false, message: 'Maintenance request not found' });
     }
 
-    // Update the status of the maintenance request to "On Going"
     maintenanceRequest.status = 'Completed';
     await maintenanceRequest.save();
 
-    // Send a success response
     res.status(200).json({ success: true, message: 'Maintenance request approved successfully' });
   } catch (error) {
-    // If an error occurs, send a 500 internal server error response
     console.error('Error approving maintenance request:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
@@ -201,7 +178,6 @@ router.get('/maintenanceRequest/ongoingMaintenance/:userId', async (req, res) =>
   const userId = req.params.userId;
 
   try {
-    // Fetch ongoing maintenance requests associated with the provided userId
     const ongoingMaintenance = await MaintenanceRequest.find({ submittedBy: userId, status: 'In Progress' });
     
     res.status(200).json({ ongoingMaintenance });
@@ -213,14 +189,7 @@ router.get('/maintenanceRequest/ongoingMaintenance/:userId', async (req, res) =>
 router.post('/maintenanceRequest/sendNotification', async (req, res) => {
   try {
     const { userId, message } = req.body;
-
-    // Here, you can implement the logic to send the notification to the user with the specified userId
-    // This could involve sending an email, a push notification, or any other method of communication
-
-    // For demonstration purposes, we'll simply log the notification details
     console.log(`Notification sent to user ${userId}: ${message}`);
-
-    // Send a success response
     res.json({ success: true, message: 'Notification sent successfully' });
   } catch (error) {
     console.error('Error sending notification:', error);
@@ -232,22 +201,17 @@ router.post('/maintenanceRequest/:id/reject', async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Find the maintenance request by ID
     const maintenanceRequest = await MaintenanceRequest.findById(id);
 
     if (!maintenanceRequest) {
-      // If maintenance request is not found, return an error response
       return res.status(404).json({ success: false, message: 'Maintenance request not found' });
     }
 
-    // Update the status of the maintenance request to "Rejected"
     maintenanceRequest.status = 'Rejected';
     await maintenanceRequest.save();
 
-    // Return a success response
     res.status(200).json({ success: true, message: 'Maintenance request rejected successfully' });
   } catch (error) {
-    // If an error occurs, return an error response
     console.error('Error rejecting maintenance request:', error);
     res.status(500).json({ success: false, message: 'Failed to reject maintenance request' });
   }

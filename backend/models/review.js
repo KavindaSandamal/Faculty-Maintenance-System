@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const reviewSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    ref: 'User', 
     required: true
   },
   notificationId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Notification', // Reference to the Notification model
+    ref: 'Notification', 
     required: true
   },
   message: {

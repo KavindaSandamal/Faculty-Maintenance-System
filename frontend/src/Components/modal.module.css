@@ -1,5 +1,4 @@
-  /* modal.module.css */
-  .modalOverlay {
+   .modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -18,5 +17,5 @@
   }
   
   .modalContent {
-    /* Add your modal content styling */
+    
   }

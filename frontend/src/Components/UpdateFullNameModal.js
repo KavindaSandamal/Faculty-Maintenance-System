@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import classes from './modal.module.css'; // Import your CSS file for modal styling
+import classes from './modal.module.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,20 +9,20 @@ const UpdateFullNameModal = ({ currentUser, onClose }) => {
 
   useEffect(() => {
     if (currentUser) {
-      setNewFullName(''); // Clear the new full name when modal is opened
+      setNewFullName('');
     }
   }, [currentUser]);
 
   const handleChange = (event) => {
-    setNewFullName(event.target.value); // Update the newFullName state as the user types
+    setNewFullName(event.target.value); 
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Send a PUT request to update the full name in the database
+
       await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/update/${currentUser._id}`, { fullName: newFullName });
-      onClose(); // Close the modal after successful update
+      onClose(); 
       toast.success('Full Name updated successfully');
     } catch (error) {
       console.error('Error updating full name:', error);
@@ -30,7 +30,7 @@ const UpdateFullNameModal = ({ currentUser, onClose }) => {
   };
 
   if (!currentUser) {
-    return null; // Render nothing if currentUser is undefined
+    return null; 
   }
 
   return (

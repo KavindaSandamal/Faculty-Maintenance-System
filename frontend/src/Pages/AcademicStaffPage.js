@@ -3,8 +3,7 @@ import MaintenanceRequests from './MaintenanceRequests';
 import StudentOngoingMaintenance from './StudentOngoingMaintenance';
 import StudentNotifications from './StudentNotifications';
 import { Link, useLocation } from 'react-router-dom';
-
-import { Collapse } from 'bootstrap'; // Import the Collapse component from Bootstrap
+import { Collapse } from 'bootstrap';
 import './styles.css';
 
 function AcademicStaffPage() {

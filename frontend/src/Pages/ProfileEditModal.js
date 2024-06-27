@@ -11,8 +11,8 @@ const ProfileEditModal = ({ isOpen, toggleModal, userId, currentUser }) => {
 
   useEffect(() => {
     if (currentUser) {
-      setNewFullName(currentUser.fullName || ''); // Initialize newFullName with currentUser's fullname
-      setNewEmail(currentUser.email || ''); // Initialize newEmail with currentUser's email
+      setNewFullName(currentUser.fullName || ''); 
+      setNewEmail(currentUser.email || ''); 
       
     }
   }, [currentUser]);
@@ -30,14 +30,13 @@ const ProfileEditModal = ({ isOpen, toggleModal, userId, currentUser }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Send a PUT request to update the fullname and email in the database
       await axios.put(`https://faculty-maintenance-system-api.vercel.app/api/user/update/${userId}`, {
         fullName: newFullName,
         email: newEmail
       });
 
-      toggleModal(); // Close the modal after successful update
-      toast.success('Profile updated successfully'); // Display success toast message
+      toggleModal();
+      toast.success('Profile updated successfully');
     } catch (error) {
       console.error('Error updating profile:', error);
       toast.error('Failed to update profile');

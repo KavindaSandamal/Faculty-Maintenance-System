@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/user'); 
 const bcrypt = require('bcrypt');
 
-// Create a new user
 router.post('/register/user', async (req, res) => {
   try {
     const {
@@ -18,13 +17,12 @@ router.post('/register/user', async (req, res) => {
       status
     } = req.body;
 
-    // Check if the registration number already exists
+
     const existingUser = await User.findOne({ regNo });
     if (existingUser) {
       return res.status(400).json({ success: false, error: 'User exists, please enter a different registration number' });
     }
 
-    // Create a new user with the provided data
     const newUser = new User({
       fullName,
       email,
@@ -37,13 +35,10 @@ router.post('/register/user', async (req, res) => {
       status
     });
 
-    // Save the user to the database
     await newUser.save();
 
-    // Respond with success message
     res.json({ success: true, message: 'User created successfully' });
   } catch (error) {
-    // Handle errors
     console.error(error);
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }

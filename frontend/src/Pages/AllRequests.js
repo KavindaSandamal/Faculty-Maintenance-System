@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../App.css'; // Import the CSS file
+import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function AllRequests() {

@@ -1,7 +1,7 @@
 body {
   background-color: #807d7d; 
-  margin: 0; /* Remove default body margin */
-  padding: 0; /* Remove default body padding */
+  margin: 0;
+  padding: 0; 
 }
 
 .auth-form-container, .login-form, .register-form {
@@ -67,8 +67,8 @@ button:hover {
   margin-left: 20px;
   border-radius: 35px;
   width: 550px;
-  background-color: #e2d9d9; /* Light gray background */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Soft shadow */
+  background-color: #e2d9d9; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
   font-family: Inter;
   font-style: normal;
   font-weight: bold;
@@ -92,5 +92,5 @@ button:hover {
   overflow: visible;
 }
 
-/* Add your remaining CSS styles below */
+
 

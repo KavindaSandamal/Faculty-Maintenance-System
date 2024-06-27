@@ -85,7 +85,7 @@ function AddRequest() {
         } else if (userRole === 'Academic Staff') {
           navigate(`/academicStaffPage/${Id}`);
         } else {
-          navigate('/'); // default fallback if role is not recognized
+          navigate('/'); 
         }
       }
     } catch (error) {

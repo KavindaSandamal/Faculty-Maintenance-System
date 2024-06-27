@@ -174,7 +174,7 @@ function MaintenanceRequestDetail() {
                       </td>
                       <td  className="text-end">
                         <img 
-                          src={maintenanceRequest.image} // Use the image URL directly
+                          src={maintenanceRequest.image} 
                           alt="Maintenance Request"
                           style={{ maxWidth: '100%', maxHeight: 'auto' }}
                         />
