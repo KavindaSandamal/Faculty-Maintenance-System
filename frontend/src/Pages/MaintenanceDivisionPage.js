@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation  } from 'react-router-dom';
 import AllRequests from './AllRequests';
 import OngoingMaintenance from './OngoingMaintenance';
 import CompletedMaintenance from './CompletedMaintenance';
@@ -7,6 +7,8 @@ import ProfileEditModal from './ProfileEditModal';
 import Reviews from './Reviews';
 
 function StudentPage() {
+  const location = useLocation();
+  const userId = location.pathname.split('/').pop();
   const [activeTab, setActiveTab] = useState('allmaintenanceRequests');
   const [currentUser, setCurrentUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false); 
